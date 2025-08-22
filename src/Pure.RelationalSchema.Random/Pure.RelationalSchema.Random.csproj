@@ -4,4 +4,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+  <PropertyGroup>
+    <PackageId>Pure.RelationalSchema.Random</PackageId>
+    <RootNamespace>Pure.RelationalSchema.Random</RootNamespace>
+    <AssemblyName>Pure.RelationalSchema.Random</AssemblyName>
+    <Authors>Dmitry Kurochkin</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/kudima03/Pure.RelationalSchema.Random</PackageProjectUrl>
+  </PropertyGroup>
 </Project>
