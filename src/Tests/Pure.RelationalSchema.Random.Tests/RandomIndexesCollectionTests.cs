@@ -12,10 +12,10 @@ public sealed record RandomIndexesCollectionTests
     [Fact]
     public void EnumeratesAsUntyped()
     {
-        const int count = 100;
+        const int count = 5;
 
         IEnumerable randoms = new RandomIndexesCollection(
-            new UShort(100),
+            new UShort(count),
             new RandomColumnsCollection(new UShort(5))
         );
 

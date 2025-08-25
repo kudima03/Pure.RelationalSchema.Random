@@ -12,6 +12,34 @@ using Random = System.Random;
 public sealed record RandomColumnTests
 {
     [Fact]
+    public void InitializeFromRandomName()
+    {
+        RandomString randomName = new RandomString(new UShort(10));
+
+        IColumn column = new RandomColumn(randomName);
+
+        Assert.Equal(
+            new DeterminedHash(randomName),
+            new DeterminedHash(column.Name),
+            new DeterminedHashEqualityComparer()
+        );
+    }
+
+    [Fact]
+    public void InitializeFromRandomColumnType()
+    {
+        RandomColumnType randomColumnType = new RandomColumnType();
+
+        IColumn column = new RandomColumn(randomColumnType);
+
+        Assert.Equal(
+            new ColumnTypeHash(randomColumnType),
+            new ColumnTypeHash(column.Type),
+            new DeterminedHashEqualityComparer()
+        );
+    }
+
+    [Fact]
     public void InitializeTypeAsCached()
     {
         IColumn column = new RandomColumn();
