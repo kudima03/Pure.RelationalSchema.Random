@@ -2,6 +2,7 @@ using Pure.Primitives.Abstractions.Bool;
 using Pure.Primitives.Cached.Bool;
 using Pure.Primitives.Number;
 using Pure.Primitives.Random.Bool;
+using Pure.Primitives.Random.Number;
 using Pure.RelationalSchema.Abstractions.Column;
 using Pure.RelationalSchema.Abstractions.Index;
 
@@ -18,7 +19,7 @@ public sealed record RandomIndex : IIndex
         : this(
             new CachedBool(new RandomBool(random)),
             new Lazy<IEnumerable<IColumn>>(() =>
-                new RandomColumnsCollection(new UShort(10), random).ToArray()
+                new RandomColumnsCollection(new RandomUShort(new MinUshort(), new UShort(100), random), random).ToArray()
             )
         )
     { }
