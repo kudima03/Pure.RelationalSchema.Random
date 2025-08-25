@@ -1,5 +1,4 @@
 using Pure.Primitives.Abstractions.Bool;
-using Pure.Primitives.Cached.Bool;
 using Pure.Primitives.Number;
 using Pure.Primitives.Random.Bool;
 using Pure.RelationalSchema.Abstractions.Column;
