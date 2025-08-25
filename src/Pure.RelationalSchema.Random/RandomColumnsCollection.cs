@@ -1,6 +1,5 @@
 using System.Collections;
 using Pure.Primitives.Abstractions.Number;
-using Pure.Primitives.Cached.Number;
 using Pure.Primitives.Random.Number;
 using Pure.RelationalSchema.Abstractions.Column;
 
@@ -16,7 +15,7 @@ public sealed record RandomColumnsCollection : IEnumerable<IColumn>
         : this(new System.Random()) { }
 
     public RandomColumnsCollection(System.Random random)
-        : this(new CachedNumber<ushort>(new RandomUShort(random)), random) { }
+        : this(new RandomUShort(random), random) { }
 
     public RandomColumnsCollection(INumber<ushort> count)
         : this(count, new System.Random()) { }
