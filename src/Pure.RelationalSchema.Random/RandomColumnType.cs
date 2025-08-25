@@ -5,13 +5,18 @@ using Pure.RelationalSchema.Abstractions.ColumnType;
 
 namespace Pure.RelationalSchema.Random;
 
+using Random = System.Random;
+
 public sealed record RandomColumnType : IColumnType
 {
     public RandomColumnType()
-        : this(new System.Random()) { }
+        : this(Random.Shared) { }
 
-    public RandomColumnType(System.Random random)
-        : this(new RandomString(new RandomUShort(random))) { }
+    public RandomColumnType(Random random)
+        : this(new RandomString(new RandomUShort(random), random)) { }
+
+    public RandomColumnType(RandomString name)
+        : this((IString)name) { }
 
     private RandomColumnType(IString name)
     {

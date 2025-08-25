@@ -6,17 +6,34 @@ using Pure.RelationalSchema.Abstractions.ColumnType;
 
 namespace Pure.RelationalSchema.Random;
 
+using Random = System.Random;
+
 public sealed record RandomColumn : IColumn
 {
     public RandomColumn()
-        : this(new System.Random()) { }
+        : this(Random.Shared) { }
 
-    public RandomColumn(System.Random random)
+    public RandomColumn(Random random)
         : this(
             new RandomString(new RandomUShort(random), random),
             new RandomColumnType(random)
         )
     { }
+
+    public RandomColumn(RandomColumnType type)
+        : this(type, Random.Shared) { }
+
+    public RandomColumn(RandomColumnType type, Random random)
+        : this(new RandomString(new RandomUShort(random), random), type) { }
+
+    public RandomColumn(RandomString name)
+        : this(name, Random.Shared) { }
+
+    public RandomColumn(RandomString name, Random random)
+        : this(name, new RandomColumnType(random)) { }
+
+    public RandomColumn(RandomString name, RandomColumnType type)
+        : this((IString)name, type) { }
 
     private RandomColumn(IString name, IColumnType type)
     {

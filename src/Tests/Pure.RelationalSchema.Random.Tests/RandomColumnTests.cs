@@ -1,8 +1,13 @@
 using Pure.HashCodes;
+using Pure.Primitives.Number;
+using Pure.Primitives.Random.Number;
+using Pure.Primitives.Random.String;
 using Pure.RelationalSchema.Abstractions.Column;
 using Pure.RelationalSchema.HashCodes;
 
 namespace Pure.RelationalSchema.Random.Tests;
+
+using Random = System.Random;
 
 public sealed record RandomColumnTests
 {
@@ -35,11 +40,22 @@ public sealed record RandomColumnTests
     {
         const int count = 100;
 
-        System.Random random = new System.Random();
+        Random random = new Random();
 
         IEnumerable<IColumn> randomColumns = Enumerable
             .Range(0, count)
-            .Select(_ => new RandomColumn(random));
+            .Select(_ => new RandomColumn(
+                new RandomString(
+                    new RandomUShort(new MinUshort(), new UShort(100), random),
+                    random
+                ),
+                new RandomColumnType(
+                    new RandomString(
+                        new RandomUShort(new MinUshort(), new UShort(100), random),
+                        random
+                    )
+                )
+            ));
 
         Assert.Equal(
             count,
@@ -57,7 +73,12 @@ public sealed record RandomColumnTests
 
         IEnumerable<IColumn> randomColumns = Enumerable
             .Range(0, count)
-            .Select(_ => new RandomColumn());
+            .Select(_ => new RandomColumn(
+                new RandomString(new RandomUShort(new MinUshort(), new UShort(100))),
+                new RandomColumnType(
+                    new RandomString(new RandomUShort(new MinUshort(), new UShort(100)))
+                )
+            ));
 
         Assert.Equal(
             count,

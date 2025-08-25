@@ -13,8 +13,7 @@ public sealed record RandomColumnTypesCollectionTests
         const int count = 100;
 
         IEnumerable randomColumnTypes = new RandomColumnTypesCollection(
-            new UShort(count),
-            new System.Random()
+            new UShort(count)
         );
 
         ICollection<IColumnType> castedColumnTypes = [];
@@ -40,8 +39,7 @@ public sealed record RandomColumnTypesCollectionTests
         const int count = 100;
 
         IEnumerable<IColumnType> randomColumnTypes = new RandomColumnTypesCollection(
-            new UShort(count),
-            new System.Random()
+            new UShort(count)
         );
 
         Assert.Equal(

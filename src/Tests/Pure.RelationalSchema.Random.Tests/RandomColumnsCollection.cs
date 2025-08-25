@@ -5,6 +5,8 @@ using Pure.RelationalSchema.HashCodes;
 
 namespace Pure.RelationalSchema.Random.Tests;
 
+using Random = System.Random;
+
 public sealed record RandomColumnsCollectionTests
 {
     [Fact]
@@ -37,7 +39,8 @@ public sealed record RandomColumnsCollectionTests
         const int count = 100;
 
         IEnumerable<IColumn> randomColumnTypes = new RandomColumnsCollection(
-            new UShort(100)
+            new UShort(100),
+            new Random()
         );
 
         Assert.Equal(

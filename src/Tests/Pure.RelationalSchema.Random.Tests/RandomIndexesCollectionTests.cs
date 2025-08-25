@@ -5,6 +5,8 @@ using Pure.RelationalSchema.HashCodes;
 
 namespace Pure.RelationalSchema.Random.Tests;
 
+using Random = System.Random;
+
 public sealed record RandomIndexesCollectionTests
 {
     [Fact]
@@ -12,7 +14,10 @@ public sealed record RandomIndexesCollectionTests
     {
         const int count = 100;
 
-        IEnumerable randoms = new RandomIndexesCollection(new UShort(100));
+        IEnumerable randoms = new RandomIndexesCollection(
+            new UShort(100),
+            new RandomColumnsCollection(new UShort(5))
+        );
 
         ICollection<IIndex> castedIndexes = [];
 
@@ -36,7 +41,12 @@ public sealed record RandomIndexesCollectionTests
     {
         const int count = 100;
 
-        IEnumerable<IIndex> randoms = new RandomIndexesCollection(new UShort(100));
+        Random random = new Random();
+
+        IEnumerable<IIndex> randoms = new RandomIndexesCollection(
+            new UShort(100),
+            new RandomColumnsCollection(new UShort(5), random)
+        );
 
         Assert.Equal(
             count,
@@ -52,7 +62,10 @@ public sealed record RandomIndexesCollectionTests
     {
         const int count = 100;
 
-        IEnumerable<IIndex> randoms = new RandomIndexesCollection(new UShort(100));
+        IEnumerable<IIndex> randoms = new RandomIndexesCollection(
+            new UShort(100),
+            new RandomColumnsCollection(new UShort(5))
+        );
 
         Assert.Equal(
             count,
