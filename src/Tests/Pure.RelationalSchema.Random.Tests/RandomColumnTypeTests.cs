@@ -4,6 +4,8 @@ using Pure.RelationalSchema.HashCodes;
 
 namespace Pure.RelationalSchema.Random.Tests;
 
+using Random = System.Random;
+
 public sealed record RandomColumnTypeTests
 {
     [Fact]
@@ -23,7 +25,7 @@ public sealed record RandomColumnTypeTests
     {
         const int count = 100;
 
-        System.Random random = new System.Random();
+        Random random = new Random();
 
         IEnumerable<IColumnType> randomColumnTypes = Enumerable
             .Range(0, count)
