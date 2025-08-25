@@ -14,7 +14,7 @@ public sealed record RandomColumn : IColumn
 
     public RandomColumn(System.Random random)
         : this(
-            new CachedString(new RandomString(new RandomUShort(random), random)),
+            new RandomString(new RandomUShort(random), random),
             new RandomColumnType(random)
         )
     { }

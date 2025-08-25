@@ -12,7 +12,7 @@ public sealed record RandomColumnType : IColumnType
         : this(new System.Random()) { }
 
     public RandomColumnType(System.Random random)
-        : this(new CachedString(new RandomString(new RandomUShort(random)))) { }
+        : this(new RandomString(new RandomUShort(random))) { }
 
     private RandomColumnType(IString name)
     {

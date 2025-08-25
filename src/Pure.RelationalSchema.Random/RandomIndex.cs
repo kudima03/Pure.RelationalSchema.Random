@@ -16,7 +16,7 @@ public sealed record RandomIndex : IIndex
 
     public RandomIndex(System.Random random)
         : this(
-            new CachedBool(new RandomBool(random)),
+            new RandomBool(random),
             new Lazy<IEnumerable<IColumn>>(() =>
                 new RandomColumnsCollection(new UShort(10), random).ToArray()
             )
