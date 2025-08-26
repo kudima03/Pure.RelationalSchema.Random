@@ -1,6 +1,8 @@
 using System.Collections;
 using Pure.Primitives.Abstractions.Number;
+using Pure.Primitives.Number;
 using Pure.Primitives.Random.Number;
+using Pure.Primitives.Random.String;
 using Pure.RelationalSchema.Abstractions.ColumnType;
 
 namespace Pure.RelationalSchema.Random;
@@ -14,13 +16,13 @@ public sealed record RandomColumnTypesCollection : IEnumerable<IColumnType>
     private readonly Random _random;
 
     public RandomColumnTypesCollection()
-        : this(new Random()) { }
+        : this(Random.Shared) { }
 
     public RandomColumnTypesCollection(Random random)
         : this(new RandomUShort(random), random) { }
 
     public RandomColumnTypesCollection(INumber<ushort> count)
-        : this(count, new Random()) { }
+        : this(count, Random.Shared) { }
 
     public RandomColumnTypesCollection(INumber<ushort> count, Random random)
     {
@@ -32,7 +34,12 @@ public sealed record RandomColumnTypesCollection : IEnumerable<IColumnType>
     {
         for (int i = 0; i < _count.NumberValue; i++)
         {
-            yield return new RandomColumnType(_random);
+            yield return new RandomColumnType(
+                new RandomString(
+                    new RandomUShort(new MinUshort(), new UShort(256)),
+                    _random
+                )
+            );
         }
     }
 
