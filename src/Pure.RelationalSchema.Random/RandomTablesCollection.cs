@@ -5,6 +5,8 @@ using Pure.RelationalSchema.Abstractions.Table;
 
 namespace Pure.RelationalSchema.Random;
 
+using Random = System.Random;
+
 public sealed record RandomTablesCollection : IEnumerable<ITable>
 {
     private readonly INumber<ushort> _count;
@@ -13,18 +15,18 @@ public sealed record RandomTablesCollection : IEnumerable<ITable>
 
     private readonly RandomColumnsCollection _columns;
 
-    private readonly System.Random _random;
+    private readonly Random _random;
 
     public RandomTablesCollection()
-        : this(System.Random.Shared) { }
+        : this(Random.Shared) { }
 
-    public RandomTablesCollection(System.Random random)
+    public RandomTablesCollection(Random random)
         : this(new RandomUShort(random), random) { }
 
     public RandomTablesCollection(INumber<ushort> count)
-        : this(count, System.Random.Shared) { }
+        : this(count, Random.Shared) { }
 
-    public RandomTablesCollection(INumber<ushort> count, System.Random random)
+    public RandomTablesCollection(INumber<ushort> count, Random random)
         : this(
             count,
             new RandomColumnsCollection(random),
@@ -34,9 +36,9 @@ public sealed record RandomTablesCollection : IEnumerable<ITable>
     { }
 
     public RandomTablesCollection(RandomColumnsCollection columns)
-        : this(columns, System.Random.Shared) { }
+        : this(columns, Random.Shared) { }
 
-    public RandomTablesCollection(RandomColumnsCollection columns, System.Random random)
+    public RandomTablesCollection(RandomColumnsCollection columns, Random random)
         : this(
             new RandomUShort(random),
             columns,
@@ -46,9 +48,9 @@ public sealed record RandomTablesCollection : IEnumerable<ITable>
     { }
 
     public RandomTablesCollection(RandomIndexesCollection indexes)
-        : this(indexes, System.Random.Shared) { }
+        : this(indexes, Random.Shared) { }
 
-    public RandomTablesCollection(RandomIndexesCollection indexes, System.Random random)
+    public RandomTablesCollection(RandomIndexesCollection indexes, Random random)
         : this(
             new RandomUShort(random),
             new RandomColumnsCollection(random),
@@ -58,22 +60,22 @@ public sealed record RandomTablesCollection : IEnumerable<ITable>
     { }
 
     public RandomTablesCollection(INumber<ushort> count, RandomColumnsCollection columns)
-        : this(count, columns, System.Random.Shared) { }
+        : this(count, columns, Random.Shared) { }
 
     public RandomTablesCollection(
         INumber<ushort> count,
         RandomColumnsCollection columns,
-        System.Random random
+        Random random
     )
         : this(count, columns, new RandomIndexesCollection(random), random) { }
 
     public RandomTablesCollection(INumber<ushort> count, RandomIndexesCollection indexes)
-        : this(count, indexes, System.Random.Shared) { }
+        : this(count, indexes, Random.Shared) { }
 
     public RandomTablesCollection(
         INumber<ushort> count,
         RandomIndexesCollection indexes,
-        System.Random random
+        Random random
     )
         : this(count, new RandomColumnsCollection(random), indexes, random) { }
 
@@ -81,12 +83,12 @@ public sealed record RandomTablesCollection : IEnumerable<ITable>
         RandomColumnsCollection columns,
         RandomIndexesCollection indexes
     )
-        : this(columns, indexes, System.Random.Shared) { }
+        : this(columns, indexes, Random.Shared) { }
 
     public RandomTablesCollection(
         RandomColumnsCollection columns,
         RandomIndexesCollection indexes,
-        System.Random random
+        Random random
     )
         : this(new RandomUShort(random), columns, indexes, random) { }
 
@@ -95,13 +97,13 @@ public sealed record RandomTablesCollection : IEnumerable<ITable>
         RandomColumnsCollection columns,
         RandomIndexesCollection indexes
     )
-        : this(count, columns, indexes, System.Random.Shared) { }
+        : this(count, columns, indexes, Random.Shared) { }
 
     public RandomTablesCollection(
         INumber<ushort> count,
         RandomColumnsCollection columns,
         RandomIndexesCollection indexes,
-        System.Random random
+        Random random
     )
     {
         _count = count;
