@@ -14,13 +14,13 @@ public sealed record RandomColumnTypesCollection : IEnumerable<IColumnType>
     private readonly Random _random;
 
     public RandomColumnTypesCollection()
-        : this(new Random()) { }
+        : this(Random.Shared) { }
 
     public RandomColumnTypesCollection(Random random)
         : this(new RandomUShort(random), random) { }
 
     public RandomColumnTypesCollection(INumber<ushort> count)
-        : this(count, new Random()) { }
+        : this(count, Random.Shared) { }
 
     public RandomColumnTypesCollection(INumber<ushort> count, Random random)
     {

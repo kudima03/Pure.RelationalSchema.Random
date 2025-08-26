@@ -24,7 +24,7 @@ public sealed record RandomColumn : IColumn
         : this(type, Random.Shared) { }
 
     public RandomColumn(RandomColumnType type, Random random)
-        : this(new RandomString(new RandomUShort(random), random), type) { }
+        : this(new RandomString(random), type) { }
 
     public RandomColumn(RandomString name)
         : this(name, Random.Shared) { }
