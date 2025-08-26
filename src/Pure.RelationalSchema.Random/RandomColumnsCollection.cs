@@ -5,22 +5,24 @@ using Pure.RelationalSchema.Abstractions.Column;
 
 namespace Pure.RelationalSchema.Random;
 
+using Random = System.Random;
+
 public sealed record RandomColumnsCollection : IEnumerable<IColumn>
 {
     private readonly INumber<ushort> _count;
 
-    private readonly System.Random _random;
+    private readonly Random _random;
 
     public RandomColumnsCollection()
-        : this(new System.Random()) { }
+        : this(Random.Shared) { }
 
-    public RandomColumnsCollection(System.Random random)
+    public RandomColumnsCollection(Random random)
         : this(new RandomUShort(random), random) { }
 
     public RandomColumnsCollection(INumber<ushort> count)
-        : this(count, new System.Random()) { }
+        : this(count, Random.Shared) { }
 
-    public RandomColumnsCollection(INumber<ushort> count, System.Random random)
+    public RandomColumnsCollection(INumber<ushort> count, Random random)
     {
         _count = count;
         _random = random;

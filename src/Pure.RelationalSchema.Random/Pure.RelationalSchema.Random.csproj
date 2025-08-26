@@ -13,8 +13,7 @@
     <PackageProjectUrl>https://github.com/kudima03/Pure.RelationalSchema.Random</PackageProjectUrl>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Pure.Primitives.Cached" Version="0.1.0" />
-    <PackageReference Include="Pure.Primitives.Random" Version="0.1.1" />
+    <PackageReference Include="Pure.Primitives.Random" Version="0.2.0" />
     <PackageReference Include="Pure.RelationalSchema.Abstractions" Version="0.2.1" />
   </ItemGroup>
 </Project>

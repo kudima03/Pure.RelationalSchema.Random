@@ -1,15 +1,18 @@
 using Pure.HashCodes;
+using Pure.Primitives.Number;
 using Pure.RelationalSchema.Abstractions.Index;
 using Pure.RelationalSchema.HashCodes;
 
 namespace Pure.RelationalSchema.Random.Tests;
+
+using Random = System.Random;
 
 public sealed record RandomIndexTests
 {
     [Fact]
     public void InitializeColumnsAsCached()
     {
-        IIndex index = new RandomIndex();
+        IIndex index = new RandomIndex(new RandomColumnsCollection(new UShort(5)));
 
         Assert.Equal(
             new AggregatedHash(index.Columns.Select(x => new ColumnHash(x))),
@@ -21,7 +24,7 @@ public sealed record RandomIndexTests
     [Fact]
     public void InitializeUniquenessAsCached()
     {
-        IIndex index = new RandomIndex();
+        IIndex index = new RandomIndex(new RandomColumnsCollection(new UShort(5)));
 
         Assert.Equal(
             new DeterminedHash(index.IsUnique),
@@ -35,11 +38,14 @@ public sealed record RandomIndexTests
     {
         const int count = 100;
 
-        System.Random random = new System.Random();
+        Random random = new Random();
 
         IEnumerable<IIndex> randoms = Enumerable
             .Range(0, count)
-            .Select(_ => new RandomIndex(random));
+            .Select(_ => new RandomIndex(
+                new RandomColumnsCollection(new UShort(5), random),
+                random
+            ));
 
         Assert.Equal(
             count,
@@ -57,7 +63,7 @@ public sealed record RandomIndexTests
 
         IEnumerable<IIndex> randoms = Enumerable
             .Range(0, count)
-            .Select(_ => new RandomIndex());
+            .Select(_ => new RandomIndex(new RandomColumnsCollection(new UShort(5))));
 
         Assert.Equal(
             count,
