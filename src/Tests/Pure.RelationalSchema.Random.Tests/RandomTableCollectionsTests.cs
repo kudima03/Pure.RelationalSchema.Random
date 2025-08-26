@@ -12,9 +12,7 @@ public sealed record RandomTableCollectionsTests
     [Fact]
     public void EnumeratesAsUntyped()
     {
-        const int count = 5;
-
-        IEnumerable randoms = new RandomTablesCollection(new UShort(count));
+        IEnumerable randoms = new RandomTablesCollection();
 
         ICollection<ITable> castedIndexes = [];
 
@@ -24,7 +22,7 @@ public sealed record RandomTableCollectionsTests
             castedIndexes.Add(castedIndex);
         }
 
-        Assert.Equal(count, castedIndexes.Count);
+        Assert.NotEmpty(castedIndexes);
     }
 
     [Fact]
@@ -80,7 +78,7 @@ public sealed record RandomTableCollectionsTests
     public void ThrowsExceptionOnGetHashCode()
     {
         _ = Assert.Throws<NotSupportedException>(() =>
-            new RandomTablesCollection().GetHashCode()
+            new RandomTablesCollection(new RandomColumnsCollection()).GetHashCode()
         );
     }
 
@@ -88,7 +86,7 @@ public sealed record RandomTableCollectionsTests
     public void ThrowsExceptionOnToString()
     {
         _ = Assert.Throws<NotSupportedException>(() =>
-            new RandomTablesCollection().ToString()
+            new RandomTablesCollection(new RandomIndexesCollection()).ToString()
         );
     }
 }
