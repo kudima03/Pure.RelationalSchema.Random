@@ -1,6 +1,8 @@
 using System.Collections;
 using Pure.Primitives.Abstractions.Number;
+using Pure.Primitives.Number;
 using Pure.Primitives.Random.Number;
+using Pure.Primitives.Random.String;
 using Pure.RelationalSchema.Abstractions.Column;
 
 namespace Pure.RelationalSchema.Random;
@@ -32,7 +34,18 @@ public sealed record RandomColumnsCollection : IEnumerable<IColumn>
     {
         for (int i = 0; i < _count.NumberValue; i++)
         {
-            yield return new RandomColumn(_random);
+            yield return new RandomColumn(
+                new RandomString(
+                    new RandomUShort(new MinUshort(), new UShort(256), _random),
+                    _random
+                ),
+                new RandomColumnType(
+                    new RandomString(
+                        new RandomUShort(new MinUshort(), new UShort(256), _random),
+                        _random
+                    )
+                )
+            );
         }
     }
 

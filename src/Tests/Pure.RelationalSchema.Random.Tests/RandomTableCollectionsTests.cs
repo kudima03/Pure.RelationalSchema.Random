@@ -37,7 +37,11 @@ public sealed record RandomTableCollectionsTests
         IEnumerable<ITable> randoms = new RandomTablesCollection(
             new UShort(5),
             new RandomColumnsCollection(new UShort(2), random),
-            new RandomIndexesCollection(new UShort(2), random)
+            new RandomIndexesCollection(
+                new UShort(2),
+                new RandomColumnsCollection(new UShort(2), random),
+                random
+            )
         );
 
         Assert.Equal(
@@ -57,7 +61,10 @@ public sealed record RandomTableCollectionsTests
         IEnumerable<ITable> randoms = new RandomTablesCollection(
             new UShort(5),
             new RandomColumnsCollection(new UShort(2)),
-            new RandomIndexesCollection(new UShort(2))
+            new RandomIndexesCollection(
+                new UShort(2),
+                new RandomColumnsCollection(new UShort(2))
+            )
         );
 
         Assert.Equal(
