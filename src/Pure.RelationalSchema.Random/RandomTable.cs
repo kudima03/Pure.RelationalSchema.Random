@@ -27,6 +27,18 @@ public sealed record RandomTable : ITable
     )
         : this(randomColumns, randomIndexes, Random.Shared) { }
 
+    public RandomTable(RandomColumnsCollection randomColumns)
+        : this(randomColumns, Random.Shared) { }
+
+    public RandomTable(RandomColumnsCollection randomColumns, Random random)
+        : this(randomColumns, new RandomIndexesCollection(random), random) { }
+
+    public RandomTable(RandomIndexesCollection randomIndexes)
+        : this(randomIndexes, Random.Shared) { }
+
+    public RandomTable(RandomIndexesCollection randomIndexes, Random random)
+        : this(new RandomColumnsCollection(random), randomIndexes, random) { }
+
     public RandomTable(
         RandomColumnsCollection randomColumns,
         RandomIndexesCollection randomIndexes,
