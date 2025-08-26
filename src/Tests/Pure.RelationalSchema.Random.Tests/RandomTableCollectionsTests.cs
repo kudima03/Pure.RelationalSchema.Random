@@ -10,6 +10,22 @@ using Random = System.Random;
 public sealed record RandomTableCollectionsTests
 {
     [Fact]
+    public void InitializeFromColumnsCtor()
+    {
+        Assert.NotEmpty(
+            new RandomTablesCollection(new UShort(10), new RandomColumnsCollection())
+        );
+    }
+
+    [Fact]
+    public void InitializeFromIndexesCtor()
+    {
+        Assert.NotEmpty(
+            new RandomTablesCollection(new UShort(10), new RandomIndexesCollection())
+        );
+    }
+
+    [Fact]
     public void EnumeratesAsUntyped()
     {
         IEnumerable randoms = new RandomTablesCollection();
