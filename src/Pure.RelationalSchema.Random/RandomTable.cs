@@ -1,12 +1,12 @@
 using Pure.Primitives.Abstractions.String;
-using Pure.Primitives.Cached.String;
-using Pure.Primitives.Random.Number;
 using Pure.Primitives.Random.String;
 using Pure.RelationalSchema.Abstractions.Column;
 using Pure.RelationalSchema.Abstractions.Index;
 using Pure.RelationalSchema.Abstractions.Table;
 
 namespace Pure.RelationalSchema.Random;
+
+using Random = System.Random;
 
 public sealed record RandomTable : ITable
 {
@@ -15,15 +15,41 @@ public sealed record RandomTable : ITable
     private readonly Lazy<IEnumerable<IIndex>> _lazyIndexes;
 
     public RandomTable()
-        : this(new System.Random()) { }
+        : this(Random.Shared) { }
 
-    public RandomTable(System.Random random)
+    public RandomTable(Random random)
+        : this(new RandomColumnsCollection(random), new RandomIndexesCollection(random))
+    { }
+
+    public RandomTable(
+        RandomColumnsCollection randomColumns,
+        RandomIndexesCollection randomIndexes
+    )
+        : this(randomColumns, randomIndexes, Random.Shared) { }
+
+    public RandomTable(
+        RandomColumnsCollection randomColumns,
+        RandomIndexesCollection randomIndexes,
+        Random random
+    )
+        : this(new RandomString(random), randomColumns, randomIndexes) { }
+
+    public RandomTable(
+        RandomString randomName,
+        RandomColumnsCollection randomColumns,
+        RandomIndexesCollection randomIndexes
+    )
+        : this(randomName, randomColumns.AsEnumerable(), randomIndexes.AsEnumerable()) { }
+
+    private RandomTable(
+        IString name,
+        IEnumerable<IColumn> lazyColumns,
+        IEnumerable<IIndex> lazyIndexes
+    )
         : this(
-            new CachedString(new RandomString(new RandomUShort(random), random)),
-            new Lazy<IEnumerable<IColumn>>(() =>
-                new RandomColumnsCollection(random).ToArray()
-            ),
-            new Lazy<IEnumerable<IIndex>>(() => new RandomIndexesCollection(random))
+            name,
+            new Lazy<IEnumerable<IColumn>>(lazyColumns.ToArray),
+            new Lazy<IEnumerable<IIndex>>(lazyIndexes.ToArray)
         )
     { }
 
