@@ -1,6 +1,10 @@
 using System.Collections;
 using Pure.Primitives.Abstractions.Number;
+using Pure.Primitives.Abstractions.String;
 using Pure.Primitives.Random.Number;
+using Pure.Primitives.Random.String;
+using Pure.RelationalSchema.Abstractions.Column;
+using Pure.RelationalSchema.Abstractions.Index;
 using Pure.RelationalSchema.Abstractions.Table;
 
 namespace Pure.RelationalSchema.Random;
@@ -11,11 +15,11 @@ public sealed record RandomTablesCollection : IEnumerable<ITable>
 {
     private readonly INumber<ushort> _count;
 
-    private readonly RandomIndexesCollection _indexes;
+    private readonly IEnumerable<IString> _name;
 
-    private readonly RandomColumnsCollection _columns;
+    private readonly IEnumerable<IEnumerable<IColumn>> _columns;
 
-    private readonly Random _random;
+    private readonly IEnumerable<IEnumerable<IIndex>> _indexes;
 
     public RandomTablesCollection()
         : this(Random.Shared) { }
@@ -29,94 +33,82 @@ public sealed record RandomTablesCollection : IEnumerable<ITable>
     public RandomTablesCollection(INumber<ushort> count, Random random)
         : this(
             count,
-            new RandomColumnsCollection(random),
-            new RandomIndexesCollection(random),
+            Enumerable
+                .Range(0, count.NumberValue)
+                .Select(_ => new RandomColumnsCollection(random)),
+            Enumerable
+                .Range(0, count.NumberValue)
+                .Select(_ => new RandomIndexesCollection(random)),
             random
         )
     { }
 
-    public RandomTablesCollection(RandomColumnsCollection columns)
-        : this(columns, Random.Shared) { }
-
-    public RandomTablesCollection(RandomColumnsCollection columns, Random random)
-        : this(
-            new RandomUShort(random),
-            columns,
-            new RandomIndexesCollection(random),
-            random
-        )
-    { }
-
-    public RandomTablesCollection(RandomIndexesCollection indexes)
-        : this(indexes, Random.Shared) { }
-
-    public RandomTablesCollection(RandomIndexesCollection indexes, Random random)
-        : this(
-            new RandomUShort(random),
-            new RandomColumnsCollection(random),
-            indexes,
-            random
-        )
-    { }
-
-    public RandomTablesCollection(INumber<ushort> count, RandomColumnsCollection columns)
-        : this(count, columns, Random.Shared) { }
-
     public RandomTablesCollection(
         INumber<ushort> count,
-        RandomColumnsCollection columns,
-        Random random
-    )
-        : this(count, columns, new RandomIndexesCollection(random), random) { }
-
-    public RandomTablesCollection(INumber<ushort> count, RandomIndexesCollection indexes)
-        : this(count, indexes, Random.Shared) { }
-
-    public RandomTablesCollection(
-        INumber<ushort> count,
-        RandomIndexesCollection indexes,
-        Random random
-    )
-        : this(count, new RandomColumnsCollection(random), indexes, random) { }
-
-    public RandomTablesCollection(
-        RandomColumnsCollection columns,
-        RandomIndexesCollection indexes
-    )
-        : this(columns, indexes, Random.Shared) { }
-
-    public RandomTablesCollection(
-        RandomColumnsCollection columns,
-        RandomIndexesCollection indexes,
-        Random random
-    )
-        : this(new RandomUShort(random), columns, indexes, random) { }
-
-    public RandomTablesCollection(
-        INumber<ushort> count,
-        RandomColumnsCollection columns,
-        RandomIndexesCollection indexes
+        IEnumerable<RandomColumnsCollection> columns,
+        IEnumerable<RandomIndexesCollection> indexes
     )
         : this(count, columns, indexes, Random.Shared) { }
 
     public RandomTablesCollection(
         INumber<ushort> count,
-        RandomColumnsCollection columns,
-        RandomIndexesCollection indexes,
+        IEnumerable<RandomColumnsCollection> columns,
+        IEnumerable<RandomIndexesCollection> indexes,
         Random random
+    )
+        : this(
+            count,
+            Enumerable.Range(0, count.NumberValue).Select(_ => new RandomString(random)),
+            columns,
+            indexes
+        )
+    { }
+
+    public RandomTablesCollection(
+        INumber<ushort> count,
+        RandomStringCollection randomNames,
+        IEnumerable<RandomColumnsCollection> randomColumns,
+        IEnumerable<RandomIndexesCollection> randomIndexes
+    )
+        : this(
+            count,
+            randomNames.AsEnumerable(),
+            randomColumns.AsEnumerable(),
+            randomIndexes.AsEnumerable()
+        )
+    { }
+
+    private RandomTablesCollection(
+        INumber<ushort> count,
+        IEnumerable<IString> name,
+        IEnumerable<IEnumerable<IColumn>> columns,
+        IEnumerable<IEnumerable<IIndex>> indexes
     )
     {
         _count = count;
+        _name = name;
         _columns = columns;
-        _random = random;
         _indexes = indexes;
     }
 
     public IEnumerator<ITable> GetEnumerator()
     {
+        using IEnumerator<IString> namesEnumerator = _name.GetEnumerator();
+        using IEnumerator<IEnumerable<IColumn>> columnsEnumerator =
+            _columns.GetEnumerator();
+        using IEnumerator<IEnumerable<IIndex>> indexesEnumerator =
+            _indexes.GetEnumerator();
         for (int i = 0; i < _count.NumberValue; i++)
         {
-            yield return new RandomTable(_columns, _indexes, _random);
+            yield return !namesEnumerator.MoveNext()
+            || !columnsEnumerator.MoveNext()
+            || !indexesEnumerator.MoveNext()
+                ? throw new ArgumentException()
+                : new RandomTable(
+                    namesEnumerator.Current,
+                    columnsEnumerator.Current,
+                    indexesEnumerator.Current
+                );
         }
     }
 
