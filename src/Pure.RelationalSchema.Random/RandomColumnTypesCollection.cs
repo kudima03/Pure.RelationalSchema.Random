@@ -1,6 +1,6 @@
 using System.Collections;
 using Pure.Primitives.Abstractions.Number;
-using Pure.Primitives.Number;
+using Pure.Primitives.Abstractions.String;
 using Pure.Primitives.Random.Number;
 using Pure.Primitives.Random.String;
 using Pure.RelationalSchema.Abstractions.ColumnType;
@@ -13,7 +13,7 @@ public sealed record RandomColumnTypesCollection : IEnumerable<IColumnType>
 {
     private readonly INumber<ushort> _count;
 
-    private readonly Random _random;
+    private readonly IEnumerable<IString> _names;
 
     public RandomColumnTypesCollection()
         : this(Random.Shared) { }
@@ -25,21 +25,29 @@ public sealed record RandomColumnTypesCollection : IEnumerable<IColumnType>
         : this(count, Random.Shared) { }
 
     public RandomColumnTypesCollection(INumber<ushort> count, Random random)
+        : this(count, new RandomStringCollection(random)) { }
+
+    public RandomColumnTypesCollection(
+        INumber<ushort> count,
+        RandomStringCollection randomNames
+    )
+        // Stryker disable once linq
+        : this(count, randomNames.AsEnumerable()) { }
+
+    private RandomColumnTypesCollection(INumber<ushort> count, IEnumerable<IString> names)
     {
         _count = count;
-        _random = random;
+        _names = names;
     }
 
     public IEnumerator<IColumnType> GetEnumerator()
     {
+        using IEnumerator<IString> namesEnumerator = _names.GetEnumerator();
         for (int i = 0; i < _count.NumberValue; i++)
         {
-            yield return new RandomColumnType(
-                new RandomString(
-                    new RandomUShort(new MinUshort(), new UShort(256)),
-                    _random
-                )
-            );
+            yield return !namesEnumerator.MoveNext()
+                ? throw new ArgumentException()
+                : (IColumnType)new RandomColumnType(namesEnumerator.Current);
         }
     }
 
