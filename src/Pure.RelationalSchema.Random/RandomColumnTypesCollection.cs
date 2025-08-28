@@ -47,7 +47,7 @@ public sealed record RandomColumnTypesCollection : IEnumerable<IColumnType>
         {
             yield return !namesEnumerator.MoveNext()
                 ? throw new ArgumentException()
-                : (IColumnType)new RandomColumnType(namesEnumerator.Current);
+                : new RandomColumnType(namesEnumerator.Current);
         }
     }
 
