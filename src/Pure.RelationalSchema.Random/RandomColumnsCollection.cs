@@ -1,9 +1,10 @@
 using System.Collections;
 using Pure.Primitives.Abstractions.Number;
-using Pure.Primitives.Number;
+using Pure.Primitives.Abstractions.String;
 using Pure.Primitives.Random.Number;
 using Pure.Primitives.Random.String;
 using Pure.RelationalSchema.Abstractions.Column;
+using Pure.RelationalSchema.Abstractions.ColumnType;
 
 namespace Pure.RelationalSchema.Random;
 
@@ -13,7 +14,9 @@ public sealed record RandomColumnsCollection : IEnumerable<IColumn>
 {
     private readonly INumber<ushort> _count;
 
-    private readonly Random _random;
+    private readonly IEnumerable<IString> _names;
+
+    private readonly IEnumerable<IColumnType> _columnTypes;
 
     public RandomColumnsCollection()
         : this(Random.Shared) { }
@@ -25,27 +28,45 @@ public sealed record RandomColumnsCollection : IEnumerable<IColumn>
         : this(count, Random.Shared) { }
 
     public RandomColumnsCollection(INumber<ushort> count, Random random)
+        : this(
+            count,
+            new RandomStringCollection(count, new RandomUShort(random)),
+            new RandomColumnTypesCollection(count, random)
+        )
+    { }
+
+    public RandomColumnsCollection(
+        INumber<ushort> count,
+        RandomStringCollection randomNames,
+        RandomColumnTypesCollection randomColumnTypes
+    )
+        // Stryker disable once linq
+        : this(count, randomNames.AsEnumerable(), randomColumnTypes.AsEnumerable()) { }
+
+    private RandomColumnsCollection(
+        INumber<ushort> count,
+        IEnumerable<IString> names,
+        IEnumerable<IColumnType> columnTypes
+    )
     {
         _count = count;
-        _random = random;
+        _names = names;
+        _columnTypes = columnTypes;
     }
 
     public IEnumerator<IColumn> GetEnumerator()
     {
+        using IEnumerator<IString> namesEnumerator = _names.GetEnumerator();
+        using IEnumerator<IColumnType> columnTypesEnumerator =
+            _columnTypes.GetEnumerator();
         for (int i = 0; i < _count.NumberValue; i++)
         {
-            yield return new RandomColumn(
-                new RandomString(
-                    new RandomUShort(new MinUshort(), new UShort(256), _random),
-                    _random
-                ),
-                new RandomColumnType(
-                    new RandomString(
-                        new RandomUShort(new MinUshort(), new UShort(256), _random),
-                        _random
-                    )
-                )
-            );
+            yield return !namesEnumerator.MoveNext() || !columnTypesEnumerator.MoveNext()
+                ? throw new ArgumentException()
+                : new RandomColumn(
+                    namesEnumerator.Current,
+                    columnTypesEnumerator.Current
+                );
         }
     }
 

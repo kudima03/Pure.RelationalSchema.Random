@@ -17,7 +17,7 @@ public sealed record RandomColumnType : IColumnType
     public RandomColumnType(RandomString name)
         : this((IString)name) { }
 
-    private RandomColumnType(IString name)
+    internal RandomColumnType(IString name)
     {
         Name = name;
     }

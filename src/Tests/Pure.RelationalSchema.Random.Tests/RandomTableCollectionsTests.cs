@@ -1,5 +1,6 @@
 using System.Collections;
 using Pure.Primitives.Number;
+using Pure.Primitives.Random.String;
 using Pure.RelationalSchema.Abstractions.Table;
 using Pure.RelationalSchema.HashCodes;
 
@@ -9,22 +10,6 @@ using Random = System.Random;
 
 public sealed record RandomTableCollectionsTests
 {
-    [Fact]
-    public void InitializeFromColumnsCtor()
-    {
-        Assert.NotEmpty(
-            new RandomTablesCollection(new UShort(10), new RandomColumnsCollection())
-        );
-    }
-
-    [Fact]
-    public void InitializeFromIndexesCtor()
-    {
-        Assert.NotEmpty(
-            new RandomTablesCollection(new UShort(10), new RandomIndexesCollection())
-        );
-    }
-
     [Fact]
     public void EnumeratesAsUntyped()
     {
@@ -49,13 +34,48 @@ public sealed record RandomTableCollectionsTests
         Random random = new Random();
 
         IEnumerable<ITable> randoms = new RandomTablesCollection(
-            new UShort(5),
-            new RandomColumnsCollection(new UShort(2), random),
-            new RandomIndexesCollection(
-                new UShort(2),
-                new RandomColumnsCollection(new UShort(2), random),
-                random
-            )
+            new UShort(count),
+            Enumerable
+                .Range(0, count)
+                .Select(_ => new RandomColumnsCollection(
+                    new UShort(count),
+                    new RandomStringCollection(
+                        new UShort(count),
+                        new UShort(count),
+                        random
+                    ),
+                    new RandomColumnTypesCollection(
+                        new UShort(count),
+                        new RandomStringCollection(
+                            new UShort(count),
+                            new UShort(count),
+                            random
+                        )
+                    )
+                )),
+            Enumerable
+                .Range(0, count)
+                .Select(_ => new RandomIndexesCollection(
+                    new UShort(count),
+                    Enumerable
+                        .Range(0, count)
+                        .Select(_ => new RandomColumnsCollection(
+                            new UShort(count),
+                            new RandomStringCollection(
+                                new UShort(count),
+                                new UShort(count),
+                                random
+                            ),
+                            new RandomColumnTypesCollection(
+                                new UShort(count),
+                                new RandomStringCollection(
+                                    new UShort(count),
+                                    new UShort(count),
+                                    random
+                                )
+                            )
+                        ))
+                ))
         );
 
         Assert.Equal(
@@ -73,12 +93,38 @@ public sealed record RandomTableCollectionsTests
         const int count = 5;
 
         IEnumerable<ITable> randoms = new RandomTablesCollection(
-            new UShort(5),
-            new RandomColumnsCollection(new UShort(2)),
-            new RandomIndexesCollection(
-                new UShort(2),
-                new RandomColumnsCollection(new UShort(2))
-            )
+            new UShort(count),
+            Enumerable
+                .Range(0, count)
+                .Select(_ => new RandomColumnsCollection(
+                    new UShort(count),
+                    new RandomStringCollection(new UShort(count), new UShort(count)),
+                    new RandomColumnTypesCollection(
+                        new UShort(count),
+                        new RandomStringCollection(new UShort(count), new UShort(count))
+                    )
+                )),
+            Enumerable
+                .Range(0, count)
+                .Select(_ => new RandomIndexesCollection(
+                    new UShort(count),
+                    Enumerable
+                        .Range(0, count)
+                        .Select(_ => new RandomColumnsCollection(
+                            new UShort(count),
+                            new RandomStringCollection(
+                                new UShort(count),
+                                new UShort(count)
+                            ),
+                            new RandomColumnTypesCollection(
+                                new UShort(count),
+                                new RandomStringCollection(
+                                    new UShort(count),
+                                    new UShort(count)
+                                )
+                            )
+                        ))
+                ))
         );
 
         Assert.Equal(
@@ -94,7 +140,7 @@ public sealed record RandomTableCollectionsTests
     public void ThrowsExceptionOnGetHashCode()
     {
         _ = Assert.Throws<NotSupportedException>(() =>
-            new RandomTablesCollection(new RandomColumnsCollection()).GetHashCode()
+            new RandomTablesCollection().GetHashCode()
         );
     }
 
@@ -102,7 +148,7 @@ public sealed record RandomTableCollectionsTests
     public void ThrowsExceptionOnToString()
     {
         _ = Assert.Throws<NotSupportedException>(() =>
-            new RandomTablesCollection(new RandomIndexesCollection()).ToString()
+            new RandomTablesCollection().ToString()
         );
     }
 }

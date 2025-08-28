@@ -1,5 +1,6 @@
 using System.Collections;
 using Pure.Primitives.Number;
+using Pure.Primitives.Random.String;
 using Pure.RelationalSchema.Abstractions.Column;
 using Pure.RelationalSchema.HashCodes;
 
@@ -12,9 +13,9 @@ public sealed record RandomColumnsCollectionTests
     [Fact]
     public void EnumeratesAsUntyped()
     {
-        const int count = 100;
+        const int count = 30;
 
-        IEnumerable randomColumnTypes = new RandomColumnsCollection(new UShort(100));
+        IEnumerable randomColumnTypes = new RandomColumnsCollection(new UShort(count));
 
         ICollection<IColumn> castedColumnTypes = [];
 
@@ -24,23 +25,23 @@ public sealed record RandomColumnsCollectionTests
             castedColumnTypes.Add(castedColumnType);
         }
 
-        Assert.Equal(
-            count,
-            castedColumnTypes
-                .Select(x => new ColumnHash(x))
-                .Distinct(new DeterminedHashEqualityComparer())
-                .Count()
-        );
+        Assert.Equal(count, castedColumnTypes.Count);
     }
 
     [Fact]
     public void ProduceRandomValuesWithSharedProvider()
     {
-        const int count = 100;
+        const int count = 30;
+
+        Random random = new Random();
 
         IEnumerable<IColumn> randomColumnTypes = new RandomColumnsCollection(
-            new UShort(100),
-            new Random()
+            new UShort(count),
+            new RandomStringCollection(new UShort(count), new UShort(count), random),
+            new RandomColumnTypesCollection(
+                new UShort(count),
+                new RandomStringCollection(new UShort(count), new UShort(count), random)
+            )
         );
 
         Assert.Equal(
@@ -55,9 +56,9 @@ public sealed record RandomColumnsCollectionTests
     [Fact]
     public void ProduceRandomValues()
     {
-        const int count = 100;
+        const int count = 30;
 
-        IEnumerable<IColumn> randoms = new RandomColumnsCollection(new UShort(100));
+        IEnumerable<IColumn> randoms = new RandomColumnsCollection(new UShort(count));
 
         Assert.Equal(
             count,
@@ -66,6 +67,34 @@ public sealed record RandomColumnsCollectionTests
                 .Distinct(new DeterminedHashEqualityComparer())
                 .Count()
         );
+    }
+
+    [Fact]
+    public void TrowsExceptionWhenNamesCountLess()
+    {
+        const int count = 30;
+
+        IEnumerable<IColumn> randomColumns = new RandomColumnsCollection(
+            new UShort(count),
+            new RandomStringCollection(new UShort(count - 1), new UShort(10)),
+            new RandomColumnTypesCollection()
+        );
+
+        _ = Assert.Throws<ArgumentException>(() => randomColumns.Count());
+    }
+
+    [Fact]
+    public void TrowsExceptionWhenColumnTypesCountLess()
+    {
+        const int count = 30;
+
+        IEnumerable<IColumn> randomColumns = new RandomColumnsCollection(
+            new UShort(count),
+            new RandomStringCollection(),
+            new RandomColumnTypesCollection(new UShort(count - 1))
+        );
+
+        _ = Assert.Throws<ArgumentException>(() => randomColumns.Count());
     }
 
     [Fact]

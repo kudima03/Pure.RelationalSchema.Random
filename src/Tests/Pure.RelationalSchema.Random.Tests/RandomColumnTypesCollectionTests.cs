@@ -1,5 +1,6 @@
 using System.Collections;
 using Pure.Primitives.Number;
+using Pure.Primitives.Random.String;
 using Pure.RelationalSchema.Abstractions.ColumnType;
 using Pure.RelationalSchema.HashCodes;
 
@@ -57,7 +58,8 @@ public sealed record RandomColumnTypesCollectionTests
         const int count = 100;
 
         IEnumerable<IColumnType> randomColumnTypes = new RandomColumnTypesCollection(
-            new UShort(count)
+            new UShort(count),
+            new RandomStringCollection(new UShort(count), new UShort(50))
         );
 
         Assert.Equal(
@@ -67,6 +69,19 @@ public sealed record RandomColumnTypesCollectionTests
                 .Distinct(new DeterminedHashEqualityComparer())
                 .Count()
         );
+    }
+
+    [Fact]
+    public void TrowsExceptionWhenNamesCountLess()
+    {
+        const int count = 100;
+
+        IEnumerable<IColumnType> randomColumnTypes = new RandomColumnTypesCollection(
+            new UShort(count),
+            new RandomStringCollection(new UShort(count - 1), new UShort(50))
+        );
+
+        _ = Assert.Throws<ArgumentException>(() => randomColumnTypes.Count());
     }
 
     [Fact]

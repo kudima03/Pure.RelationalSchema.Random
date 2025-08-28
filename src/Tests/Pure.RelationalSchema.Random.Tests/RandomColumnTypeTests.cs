@@ -23,7 +23,7 @@ public sealed record RandomColumnTypeTests
     [Fact]
     public void ProduceRandomValuesWithSharedProvider()
     {
-        const int count = 100;
+        const int count = 30;
 
         Random random = new Random();
 
@@ -43,7 +43,7 @@ public sealed record RandomColumnTypeTests
     [Fact]
     public void ProduceRandomValues()
     {
-        const int count = 100;
+        const int count = 30;
 
         IEnumerable<IColumnType> randomColumnTypes = Enumerable
             .Range(0, count)

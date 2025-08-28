@@ -1,6 +1,8 @@
 using System.Collections;
 using Pure.Primitives.Abstractions.Number;
+using Pure.Primitives.Random.Bool;
 using Pure.Primitives.Random.Number;
+using Pure.RelationalSchema.Abstractions.Column;
 using Pure.RelationalSchema.Abstractions.Index;
 
 namespace Pure.RelationalSchema.Random;
@@ -11,7 +13,7 @@ public sealed record RandomIndexesCollection : IEnumerable<IIndex>
 {
     private readonly INumber<ushort> _count;
 
-    private readonly RandomColumnsCollection _columns;
+    private readonly IEnumerable<IEnumerable<IColumn>> _columns;
 
     private readonly Random _random;
 
@@ -25,14 +27,32 @@ public sealed record RandomIndexesCollection : IEnumerable<IIndex>
         : this(count, Random.Shared) { }
 
     public RandomIndexesCollection(INumber<ushort> count, Random random)
-        : this(count, new RandomColumnsCollection(random), random) { }
+        : this(
+            count,
+            Enumerable
+                .Range(0, count.NumberValue)
+                .Select(_ => new RandomColumnsCollection(random)),
+            random
+        )
+    { }
 
-    public RandomIndexesCollection(INumber<ushort> count, RandomColumnsCollection columns)
+    public RandomIndexesCollection(
+        INumber<ushort> count,
+        IEnumerable<RandomColumnsCollection> columns
+    )
         : this(count, columns, Random.Shared) { }
 
     public RandomIndexesCollection(
         INumber<ushort> count,
-        RandomColumnsCollection columns,
+        IEnumerable<RandomColumnsCollection> columns,
+        Random random
+    )
+        // Stryker disable once linq
+        : this(count, columns.Cast<IEnumerable<IColumn>>().AsEnumerable(), random) { }
+
+    private RandomIndexesCollection(
+        INumber<ushort> count,
+        IEnumerable<IEnumerable<IColumn>> columns,
         Random random
     )
     {
@@ -43,9 +63,13 @@ public sealed record RandomIndexesCollection : IEnumerable<IIndex>
 
     public IEnumerator<IIndex> GetEnumerator()
     {
+        using IEnumerator<IEnumerable<IColumn>> columnsEnumerator =
+            _columns.GetEnumerator();
         for (int i = 0; i < _count.NumberValue; i++)
         {
-            yield return new RandomIndex(_columns, _random);
+            yield return !columnsEnumerator.MoveNext()
+                ? throw new ArgumentException()
+                : new RandomIndex(new RandomBool(_random), columnsEnumerator.Current);
         }
     }
 

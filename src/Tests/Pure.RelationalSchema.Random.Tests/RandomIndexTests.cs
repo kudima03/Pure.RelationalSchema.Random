@@ -1,5 +1,6 @@
 using Pure.HashCodes;
 using Pure.Primitives.Number;
+using Pure.Primitives.Random.String;
 using Pure.RelationalSchema.Abstractions.Index;
 using Pure.RelationalSchema.HashCodes;
 
@@ -43,7 +44,14 @@ public sealed record RandomIndexTests
         IEnumerable<IIndex> randoms = Enumerable
             .Range(0, count)
             .Select(_ => new RandomIndex(
-                new RandomColumnsCollection(new UShort(5), random),
+                new RandomColumnsCollection(
+                    new UShort(5),
+                    new RandomStringCollection(new UShort(10), new UShort(10), random),
+                    new RandomColumnTypesCollection(
+                        new UShort(10),
+                        new RandomStringCollection(new UShort(10), new UShort(10), random)
+                    )
+                ),
                 random
             ));
 
@@ -63,7 +71,16 @@ public sealed record RandomIndexTests
 
         IEnumerable<IIndex> randoms = Enumerable
             .Range(0, count)
-            .Select(_ => new RandomIndex(new RandomColumnsCollection(new UShort(5))));
+            .Select(_ => new RandomIndex(
+                new RandomColumnsCollection(
+                    new UShort(5),
+                    new RandomStringCollection(new UShort(10), new UShort(10)),
+                    new RandomColumnTypesCollection(
+                        new UShort(10),
+                        new RandomStringCollection(new UShort(10), new UShort(10))
+                    )
+                )
+            ));
 
         Assert.Equal(
             count,
