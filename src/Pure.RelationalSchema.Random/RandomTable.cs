@@ -54,15 +54,15 @@ public sealed record RandomTable : ITable
     // Stryker disable once linq
         : this(randomName, randomColumns.AsEnumerable(), randomIndexes.AsEnumerable()) { }
 
-    private RandomTable(
+    internal RandomTable(
         IString name,
-        IEnumerable<IColumn> lazyColumns,
-        IEnumerable<IIndex> lazyIndexes
+        IEnumerable<IColumn> columns,
+        IEnumerable<IIndex> indexes
     )
         : this(
             name,
-            new Lazy<IEnumerable<IColumn>>(lazyColumns.ToArray),
-            new Lazy<IEnumerable<IIndex>>(lazyIndexes.ToArray)
+            new Lazy<IEnumerable<IColumn>>(columns.ToArray),
+            new Lazy<IEnumerable<IIndex>>(indexes.ToArray)
         )
     { }
 

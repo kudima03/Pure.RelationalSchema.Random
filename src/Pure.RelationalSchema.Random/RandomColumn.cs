@@ -35,7 +35,7 @@ public sealed record RandomColumn : IColumn
     public RandomColumn(RandomString name, RandomColumnType type)
         : this((IString)name, type) { }
 
-    private RandomColumn(IString name, IColumnType type)
+    internal RandomColumn(IString name, IColumnType type)
     {
         Name = name;
         Type = type;

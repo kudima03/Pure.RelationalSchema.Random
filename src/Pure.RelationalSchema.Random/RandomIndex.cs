@@ -23,7 +23,7 @@ public sealed record RandomIndex : IIndex
     public RandomIndex(RandomColumnsCollection columns, Random random)
         : this(new RandomBool(random), columns) { }
 
-    private RandomIndex(IBool isUnique, IEnumerable<IColumn> columns)
+    internal RandomIndex(IBool isUnique, IEnumerable<IColumn> columns)
         : this(isUnique, new Lazy<IEnumerable<IColumn>>(columns.ToArray)) { }
 
     private RandomIndex(IBool isUnique, Lazy<IEnumerable<IColumn>> columns)
