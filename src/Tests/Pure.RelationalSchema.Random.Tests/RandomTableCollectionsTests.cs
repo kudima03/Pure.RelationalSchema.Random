@@ -1,5 +1,6 @@
 using System.Collections;
 using Pure.Primitives.Number;
+using Pure.Primitives.Random.String;
 using Pure.RelationalSchema.Abstractions.Table;
 using Pure.RelationalSchema.HashCodes;
 
@@ -49,12 +50,39 @@ public sealed record RandomTableCollectionsTests
         Random random = new Random();
 
         IEnumerable<ITable> randoms = new RandomTablesCollection(
-            new UShort(5),
-            new RandomColumnsCollection(new UShort(2), random),
+            new UShort(count),
+            new RandomColumnsCollection(
+                new UShort(count),
+                new RandomStringCollection(new UShort(count), new UShort(count), random),
+                new RandomColumnTypesCollection(
+                    new UShort(count),
+                    new RandomStringCollection(
+                        new UShort(count),
+                        new UShort(count),
+                        random
+                    )
+                )
+            ),
             new RandomIndexesCollection(
-                new UShort(2),
-                new RandomColumnsCollection(new UShort(2), random),
-                random
+                new UShort(count),
+                Enumerable
+                    .Range(0, 5)
+                    .Select(_ => new RandomColumnsCollection(
+                        new UShort(count),
+                        new RandomStringCollection(
+                            new UShort(count),
+                            new UShort(count),
+                            random
+                        ),
+                        new RandomColumnTypesCollection(
+                            new UShort(count),
+                            new RandomStringCollection(
+                                new UShort(count),
+                                new UShort(count),
+                                random
+                            )
+                        )
+                    ))
             )
         );
 
@@ -73,11 +101,30 @@ public sealed record RandomTableCollectionsTests
         const int count = 5;
 
         IEnumerable<ITable> randoms = new RandomTablesCollection(
-            new UShort(5),
-            new RandomColumnsCollection(new UShort(2)),
+            new UShort(count),
+            new RandomColumnsCollection(
+                new UShort(count),
+                new RandomStringCollection(new UShort(count), new UShort(count)),
+                new RandomColumnTypesCollection(
+                    new UShort(count),
+                    new RandomStringCollection(new UShort(count), new UShort(count))
+                )
+            ),
             new RandomIndexesCollection(
-                new UShort(2),
-                new RandomColumnsCollection(new UShort(2))
+                new UShort(count),
+                Enumerable
+                    .Range(0, count)
+                    .Select(_ => new RandomColumnsCollection(
+                        new UShort(count),
+                        new RandomStringCollection(new UShort(count), new UShort(count)),
+                        new RandomColumnTypesCollection(
+                            new UShort(count),
+                            new RandomStringCollection(
+                                new UShort(count),
+                                new UShort(count)
+                            )
+                        )
+                    ))
             )
         );
 

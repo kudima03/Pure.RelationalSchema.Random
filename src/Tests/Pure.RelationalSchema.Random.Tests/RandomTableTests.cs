@@ -1,6 +1,6 @@
 using Pure.HashCodes;
 using Pure.Primitives.Number;
-using Pure.Primitives.Random.Number;
+using Pure.Primitives.Random.String;
 using Pure.RelationalSchema.Abstractions.Table;
 using Pure.RelationalSchema.HashCodes;
 
@@ -26,7 +26,14 @@ public sealed record RandomTableTests
     public void InitializeColumnsAsCached()
     {
         ITable table = new RandomTable(
-            new RandomColumnsCollection(new RandomUShort(new MinUshort(), new UShort(2)))
+            new RandomColumnsCollection(
+                new UShort(10),
+                new RandomStringCollection(new UShort(10), new UShort(10)),
+                new RandomColumnTypesCollection(
+                    new UShort(10),
+                    new RandomStringCollection(new UShort(10), new UShort(10))
+                )
+            )
         );
 
         Assert.Equal(
@@ -40,7 +47,19 @@ public sealed record RandomTableTests
     public void InitializeIndexesAsCached()
     {
         ITable table = new RandomTable(
-            new RandomIndexesCollection(new RandomUShort(new MinUshort(), new UShort(2)))
+            new RandomIndexesCollection(
+                new UShort(10),
+                Enumerable
+                    .Range(0, 10)
+                    .Select(_ => new RandomColumnsCollection(
+                        new UShort(10),
+                        new RandomStringCollection(new UShort(10), new UShort(10)),
+                        new RandomColumnTypesCollection(
+                            new UShort(10),
+                            new RandomStringCollection(new UShort(10), new UShort(10))
+                        )
+                    ))
+            )
         );
 
         Assert.Equal(
@@ -61,14 +80,26 @@ public sealed record RandomTableTests
             .Range(0, count)
             .Select(_ => new RandomTable(
                 new RandomColumnsCollection(
-                    new RandomUShort(new MinUshort(), new UShort(2), random),
-                    random
+                    new UShort(5),
+                    new RandomStringCollection(new UShort(10), new UShort(10), random),
+                    new RandomColumnTypesCollection(
+                        new UShort(10),
+                        new RandomStringCollection(new UShort(10), new UShort(10), random)
+                    )
                 ),
                 new RandomIndexesCollection(
-                    new RandomUShort(new MinUshort(), new UShort(2), random),
-                    random
-                ),
-                random
+                    new UShort(5),
+                    Enumerable
+                        .Range(0, 5)
+                        .Select(_ => new RandomColumnsCollection(
+                            new UShort(10),
+                            new RandomStringCollection(new UShort(10), new UShort(10)),
+                            new RandomColumnTypesCollection(
+                                new UShort(10),
+                                new RandomStringCollection(new UShort(10), new UShort(10))
+                            )
+                        ))
+                )
             ));
 
         Assert.Equal(
@@ -89,10 +120,25 @@ public sealed record RandomTableTests
             .Range(0, count)
             .Select(_ => new RandomTable(
                 new RandomColumnsCollection(
-                    new RandomUShort(new MinUshort(), new UShort(2))
+                    new UShort(5),
+                    new RandomStringCollection(new UShort(10), new UShort(10)),
+                    new RandomColumnTypesCollection(
+                        new UShort(10),
+                        new RandomStringCollection(new UShort(10), new UShort(10))
+                    )
                 ),
                 new RandomIndexesCollection(
-                    new RandomUShort(new MinUshort(), new UShort(2))
+                    new UShort(5),
+                    Enumerable
+                        .Range(0, 5)
+                        .Select(_ => new RandomColumnsCollection(
+                            new UShort(10),
+                            new RandomStringCollection(new UShort(10), new UShort(10)),
+                            new RandomColumnTypesCollection(
+                                new UShort(10),
+                                new RandomStringCollection(new UShort(10), new UShort(10))
+                            )
+                        ))
                 )
             ));
 
