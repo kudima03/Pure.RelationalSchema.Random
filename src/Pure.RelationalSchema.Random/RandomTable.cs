@@ -51,7 +51,7 @@ public sealed record RandomTable : ITable
         RandomColumnsCollection randomColumns,
         RandomIndexesCollection randomIndexes
     )
-    // Stryker disable once linq
+        // Stryker disable once linq
         : this(randomName, randomColumns.AsEnumerable(), randomIndexes.AsEnumerable()) { }
 
     internal RandomTable(
