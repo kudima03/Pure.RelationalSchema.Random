@@ -27,12 +27,6 @@ public sealed record RandomColumnTypesCollection : IEnumerable<IColumnType>
     public RandomColumnTypesCollection(INumber<ushort> count, Random random)
         : this(count, new RandomStringCollection(random)) { }
 
-    public RandomColumnTypesCollection(RandomStringCollection randomNames)
-        : this(randomNames, Random.Shared) { }
-
-    public RandomColumnTypesCollection(RandomStringCollection randomNames, Random random)
-        : this(new RandomUShort(random), randomNames) { }
-
     public RandomColumnTypesCollection(
         INumber<ushort> count,
         RandomStringCollection randomNames
