@@ -70,6 +70,7 @@ public sealed record RandomTablesCollection : IEnumerable<ITable>
         IEnumerable<RandomColumnsCollection> randomColumns,
         IEnumerable<RandomIndexesCollection> randomIndexes
     )
+        // Stryker disable once linq
         : this(
             count,
             randomNames.AsEnumerable(),
