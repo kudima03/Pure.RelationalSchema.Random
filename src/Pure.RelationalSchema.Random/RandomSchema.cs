@@ -84,6 +84,7 @@ public sealed record RandomSchema : ISchema
         RandomTablesCollection tables,
         RandomForeignKeysCollection foreignKeys
     )
+        // Stryker disable once linq
         : this(name, tables.AsEnumerable(), foreignKeys.AsEnumerable()) { }
 
     private RandomSchema(
