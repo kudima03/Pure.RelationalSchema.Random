@@ -11,6 +11,16 @@ using Random = System.Random;
 public sealed record RandomTableTests
 {
     [Fact]
+    public void DefaultConstructorProduceNameLessThan100Symbols()
+    {
+        IEnumerable<ITable> randoms = Enumerable
+            .Range(0, 100)
+            .Select(_ => new RandomTable());
+
+        Assert.True(randoms.All(x => x.Name.TextValue.Length < 100));
+    }
+
+    [Fact]
     public void InitializeNameAsCached()
     {
         ITable table = new RandomTable();

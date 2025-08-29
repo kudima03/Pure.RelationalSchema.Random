@@ -1,4 +1,6 @@
 using Pure.Primitives.Abstractions.String;
+using Pure.Primitives.Number;
+using Pure.Primitives.Random.Number;
 using Pure.Primitives.Random.String;
 using Pure.RelationalSchema.Abstractions.Column;
 using Pure.RelationalSchema.Abstractions.Index;
@@ -44,7 +46,15 @@ public sealed record RandomTable : ITable
         RandomIndexesCollection randomIndexes,
         Random random
     )
-        : this(new RandomString(random), randomColumns, randomIndexes) { }
+        : this(
+            new RandomString(
+                new RandomUShort(new MinUshort(), new UShort(100), random),
+                random
+            ),
+            randomColumns,
+            randomIndexes
+        )
+    { }
 
     public RandomTable(
         RandomString randomName,
