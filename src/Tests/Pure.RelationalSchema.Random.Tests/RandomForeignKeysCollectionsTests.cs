@@ -11,6 +11,14 @@ using Random = System.Random;
 public sealed record RandomForeignKeysCollectionsTests
 {
     [Fact]
+    public void DefaultConstructorProduceLessThan100Values()
+    {
+        IEnumerable<IForeignKey> randoms = new RandomForeignKeysCollection();
+
+        Assert.True(randoms.Count() < 100);
+    }
+
+    [Fact]
     public void EnumeratesAsUntyped()
     {
         IEnumerable randoms = new RandomForeignKeysCollection(new UShort(10));
