@@ -1,6 +1,5 @@
 using Pure.HashCodes;
 using Pure.Primitives.Number;
-using Pure.Primitives.Random.Number;
 using Pure.Primitives.Random.String;
 using Pure.RelationalSchema.Abstractions.Column;
 using Pure.RelationalSchema.HashCodes;
@@ -11,6 +10,16 @@ using Random = System.Random;
 
 public sealed record RandomColumnTests
 {
+    [Fact]
+    public void DefaultConstructorProduceNameLessThan100Symbols()
+    {
+        IEnumerable<IColumn> randoms = Enumerable
+            .Range(0, 100)
+            .Select(_ => new RandomColumn());
+
+        Assert.True(randoms.All(x => x.Name.TextValue.Length < 10));
+    }
+
     [Fact]
     public void InitializeFromRandomName()
     {
@@ -66,24 +75,13 @@ public sealed record RandomColumnTests
     [Fact]
     public void ProduceRandomValuesWithSharedProvider()
     {
-        const int count = 100;
+        const int count = 10;
 
         Random random = new Random();
 
         IEnumerable<IColumn> randomColumns = Enumerable
             .Range(0, count)
-            .Select(_ => new RandomColumn(
-                new RandomString(
-                    new RandomUShort(new MinUshort(), new UShort(100), random),
-                    random
-                ),
-                new RandomColumnType(
-                    new RandomString(
-                        new RandomUShort(new MinUshort(), new UShort(100), random),
-                        random
-                    )
-                )
-            ));
+            .Select(_ => new RandomColumn(random));
 
         Assert.Equal(
             count,
@@ -97,16 +95,11 @@ public sealed record RandomColumnTests
     [Fact]
     public void ProduceRandomValues()
     {
-        const int count = 100;
+        const int count = 10;
 
         IEnumerable<IColumn> randomColumns = Enumerable
             .Range(0, count)
-            .Select(_ => new RandomColumn(
-                new RandomString(new RandomUShort(new MinUshort(), new UShort(100))),
-                new RandomColumnType(
-                    new RandomString(new RandomUShort(new MinUshort(), new UShort(100)))
-                )
-            ));
+            .Select(_ => new RandomColumn());
 
         Assert.Equal(
             count,

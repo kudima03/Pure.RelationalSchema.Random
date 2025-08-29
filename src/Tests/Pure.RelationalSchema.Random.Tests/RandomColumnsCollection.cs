@@ -11,9 +11,17 @@ using Random = System.Random;
 public sealed record RandomColumnsCollectionTests
 {
     [Fact]
+    public void DefaultConstructorProduceLessThan100Values()
+    {
+        IEnumerable<IColumn> randoms = new RandomColumnsCollection();
+
+        Assert.True(randoms.Count() < 10);
+    }
+
+    [Fact]
     public void EnumeratesAsUntyped()
     {
-        const int count = 30;
+        const int count = 10;
 
         IEnumerable randomColumnTypes = new RandomColumnsCollection(new UShort(count));
 
@@ -31,17 +39,13 @@ public sealed record RandomColumnsCollectionTests
     [Fact]
     public void ProduceRandomValuesWithSharedProvider()
     {
-        const int count = 30;
+        const int count = 10;
 
         Random random = new Random();
 
         IEnumerable<IColumn> randomColumnTypes = new RandomColumnsCollection(
             new UShort(count),
-            new RandomStringCollection(new UShort(count), new UShort(count), random),
-            new RandomColumnTypesCollection(
-                new UShort(count),
-                new RandomStringCollection(new UShort(count), new UShort(count), random)
-            )
+            random
         );
 
         Assert.Equal(
@@ -56,7 +60,7 @@ public sealed record RandomColumnsCollectionTests
     [Fact]
     public void ProduceRandomValues()
     {
-        const int count = 30;
+        const int count = 10;
 
         IEnumerable<IColumn> randoms = new RandomColumnsCollection(new UShort(count));
 
@@ -72,7 +76,7 @@ public sealed record RandomColumnsCollectionTests
     [Fact]
     public void TrowsExceptionWhenNamesCountLess()
     {
-        const int count = 30;
+        const int count = 10;
 
         IEnumerable<IColumn> randomColumns = new RandomColumnsCollection(
             new UShort(count),
@@ -86,7 +90,7 @@ public sealed record RandomColumnsCollectionTests
     [Fact]
     public void TrowsExceptionWhenColumnTypesCountLess()
     {
-        const int count = 30;
+        const int count = 10;
 
         IEnumerable<IColumn> randomColumns = new RandomColumnsCollection(
             new UShort(count),

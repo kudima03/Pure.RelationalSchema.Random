@@ -1,6 +1,5 @@
 using System.Collections;
 using Pure.Primitives.Number;
-using Pure.Primitives.Random.String;
 using Pure.RelationalSchema.Abstractions.Table;
 using Pure.RelationalSchema.HashCodes;
 
@@ -10,6 +9,14 @@ using Random = System.Random;
 
 public sealed record RandomTableCollectionsTests
 {
+    [Fact]
+    public void DefaultConstructorProduceLessThan100Values()
+    {
+        IEnumerable<ITable> randoms = new RandomTablesCollection();
+
+        Assert.True(randoms.Count() < 10);
+    }
+
     [Fact]
     public void EnumeratesAsUntyped()
     {
@@ -31,51 +38,9 @@ public sealed record RandomTableCollectionsTests
     {
         const int count = 5;
 
-        Random random = new Random();
-
         IEnumerable<ITable> randoms = new RandomTablesCollection(
             new UShort(count),
-            Enumerable
-                .Range(0, count)
-                .Select(_ => new RandomColumnsCollection(
-                    new UShort(count),
-                    new RandomStringCollection(
-                        new UShort(count),
-                        new UShort(count),
-                        random
-                    ),
-                    new RandomColumnTypesCollection(
-                        new UShort(count),
-                        new RandomStringCollection(
-                            new UShort(count),
-                            new UShort(count),
-                            random
-                        )
-                    )
-                )),
-            Enumerable
-                .Range(0, count)
-                .Select(_ => new RandomIndexesCollection(
-                    new UShort(count),
-                    Enumerable
-                        .Range(0, count)
-                        .Select(_ => new RandomColumnsCollection(
-                            new UShort(count),
-                            new RandomStringCollection(
-                                new UShort(count),
-                                new UShort(count),
-                                random
-                            ),
-                            new RandomColumnTypesCollection(
-                                new UShort(count),
-                                new RandomStringCollection(
-                                    new UShort(count),
-                                    new UShort(count),
-                                    random
-                                )
-                            )
-                        ))
-                ))
+            new Random()
         );
 
         Assert.Equal(
@@ -92,40 +57,7 @@ public sealed record RandomTableCollectionsTests
     {
         const int count = 5;
 
-        IEnumerable<ITable> randoms = new RandomTablesCollection(
-            new UShort(count),
-            Enumerable
-                .Range(0, count)
-                .Select(_ => new RandomColumnsCollection(
-                    new UShort(count),
-                    new RandomStringCollection(new UShort(count), new UShort(count)),
-                    new RandomColumnTypesCollection(
-                        new UShort(count),
-                        new RandomStringCollection(new UShort(count), new UShort(count))
-                    )
-                )),
-            Enumerable
-                .Range(0, count)
-                .Select(_ => new RandomIndexesCollection(
-                    new UShort(count),
-                    Enumerable
-                        .Range(0, count)
-                        .Select(_ => new RandomColumnsCollection(
-                            new UShort(count),
-                            new RandomStringCollection(
-                                new UShort(count),
-                                new UShort(count)
-                            ),
-                            new RandomColumnTypesCollection(
-                                new UShort(count),
-                                new RandomStringCollection(
-                                    new UShort(count),
-                                    new UShort(count)
-                                )
-                            )
-                        ))
-                ))
-        );
+        IEnumerable<ITable> randoms = new RandomTablesCollection(new UShort(count));
 
         Assert.Equal(
             count,

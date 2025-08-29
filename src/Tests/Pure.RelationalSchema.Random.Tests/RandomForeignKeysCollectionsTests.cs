@@ -1,6 +1,5 @@
 using System.Collections;
 using Pure.Primitives.Number;
-using Pure.Primitives.Random.String;
 using Pure.RelationalSchema.Abstractions.ForeignKey;
 using Pure.RelationalSchema.HashCodes;
 
@@ -10,6 +9,14 @@ using Random = System.Random;
 
 public sealed record RandomForeignKeysCollectionsTests
 {
+    [Fact]
+    public void DefaultConstructorProduceLessThan100Values()
+    {
+        IEnumerable<IForeignKey> randoms = new RandomForeignKeysCollection();
+
+        Assert.True(randoms.Count() < 10);
+    }
+
     [Fact]
     public void EnumeratesAsUntyped()
     {
@@ -33,128 +40,9 @@ public sealed record RandomForeignKeysCollectionsTests
 
         Random random = new Random();
 
-        RandomTablesCollection randomReferencingTables = new RandomTablesCollection(
-            new UShort(count),
-            Enumerable
-                .Range(0, count)
-                .Select(_ => new RandomColumnsCollection(
-                    new UShort(count),
-                    new RandomStringCollection(
-                        new UShort(count),
-                        new UShort(count),
-                        random
-                    ),
-                    new RandomColumnTypesCollection(
-                        new UShort(count),
-                        new RandomStringCollection(
-                            new UShort(count),
-                            new UShort(count),
-                            random
-                        )
-                    )
-                )),
-            Enumerable
-                .Range(0, count)
-                .Select(_ => new RandomIndexesCollection(
-                    new UShort(count),
-                    Enumerable
-                        .Range(0, count)
-                        .Select(_ => new RandomColumnsCollection(
-                            new UShort(count),
-                            new RandomStringCollection(
-                                new UShort(count),
-                                new UShort(count),
-                                random
-                            ),
-                            new RandomColumnTypesCollection(
-                                new UShort(count),
-                                new RandomStringCollection(
-                                    new UShort(count),
-                                    new UShort(count),
-                                    random
-                                )
-                            )
-                        )),
-                    random
-                )),
-            random
-        );
-
-        RandomTablesCollection randomReferencedTables = new RandomTablesCollection(
-            new UShort(count),
-            Enumerable
-                .Range(0, count)
-                .Select(_ => new RandomColumnsCollection(
-                    new UShort(count),
-                    new RandomStringCollection(
-                        new UShort(count),
-                        new UShort(count),
-                        random
-                    ),
-                    new RandomColumnTypesCollection(
-                        new UShort(count),
-                        new RandomStringCollection(
-                            new UShort(count),
-                            new UShort(count),
-                            random
-                        )
-                    )
-                )),
-            Enumerable
-                .Range(0, count)
-                .Select(_ => new RandomIndexesCollection(
-                    new UShort(count),
-                    Enumerable
-                        .Range(0, count)
-                        .Select(_ => new RandomColumnsCollection(
-                            new UShort(count),
-                            new RandomStringCollection(
-                                new UShort(count),
-                                new UShort(count),
-                                random
-                            ),
-                            new RandomColumnTypesCollection(
-                                new UShort(count),
-                                new RandomStringCollection(
-                                    new UShort(count),
-                                    new UShort(count),
-                                    random
-                                )
-                            )
-                        )),
-                    random
-                )),
-            random
-        );
-
         IEnumerable<IForeignKey> foreignKeys = new RandomForeignKeysCollection(
             new UShort(count),
-            randomReferencingTables,
-            new RandomColumnsCollection(
-                new UShort(count),
-                new RandomStringCollection(new UShort(count), new UShort(count), random),
-                new RandomColumnTypesCollection(
-                    new UShort(count),
-                    new RandomStringCollection(
-                        new UShort(count),
-                        new UShort(count),
-                        random
-                    )
-                )
-            ),
-            randomReferencedTables,
-            new RandomColumnsCollection(
-                new UShort(count),
-                new RandomStringCollection(new UShort(count), new UShort(count), random),
-                new RandomColumnTypesCollection(
-                    new UShort(count),
-                    new RandomStringCollection(
-                        new UShort(count),
-                        new UShort(count),
-                        random
-                    )
-                )
-            )
+            random
         );
 
         Assert.Equal(
@@ -171,96 +59,8 @@ public sealed record RandomForeignKeysCollectionsTests
     {
         const int count = 5;
 
-        RandomTablesCollection randomReferencingTables = new RandomTablesCollection(
-            new UShort(count),
-            Enumerable
-                .Range(0, count)
-                .Select(_ => new RandomColumnsCollection(
-                    new UShort(count),
-                    new RandomStringCollection(new UShort(count), new UShort(count)),
-                    new RandomColumnTypesCollection(
-                        new UShort(count),
-                        new RandomStringCollection(new UShort(count), new UShort(count))
-                    )
-                )),
-            Enumerable
-                .Range(0, count)
-                .Select(_ => new RandomIndexesCollection(
-                    new UShort(count),
-                    Enumerable
-                        .Range(0, count)
-                        .Select(_ => new RandomColumnsCollection(
-                            new UShort(count),
-                            new RandomStringCollection(
-                                new UShort(count),
-                                new UShort(count)
-                            ),
-                            new RandomColumnTypesCollection(
-                                new UShort(count),
-                                new RandomStringCollection(
-                                    new UShort(count),
-                                    new UShort(count)
-                                )
-                            )
-                        ))
-                ))
-        );
-
-        RandomTablesCollection randomReferencedTables = new RandomTablesCollection(
-            new UShort(count),
-            Enumerable
-                .Range(0, count)
-                .Select(_ => new RandomColumnsCollection(
-                    new UShort(count),
-                    new RandomStringCollection(new UShort(count), new UShort(count)),
-                    new RandomColumnTypesCollection(
-                        new UShort(count),
-                        new RandomStringCollection(new UShort(count), new UShort(count))
-                    )
-                )),
-            Enumerable
-                .Range(0, count)
-                .Select(_ => new RandomIndexesCollection(
-                    new UShort(count),
-                    Enumerable
-                        .Range(0, count)
-                        .Select(_ => new RandomColumnsCollection(
-                            new UShort(count),
-                            new RandomStringCollection(
-                                new UShort(count),
-                                new UShort(count)
-                            ),
-                            new RandomColumnTypesCollection(
-                                new UShort(count),
-                                new RandomStringCollection(
-                                    new UShort(count),
-                                    new UShort(count)
-                                )
-                            )
-                        ))
-                ))
-        );
-
         IEnumerable<IForeignKey> foreignKeys = new RandomForeignKeysCollection(
-            new UShort(count),
-            randomReferencingTables,
-            new RandomColumnsCollection(
-                new UShort(count),
-                new RandomStringCollection(new UShort(count), new UShort(count)),
-                new RandomColumnTypesCollection(
-                    new UShort(count),
-                    new RandomStringCollection(new UShort(count), new UShort(count))
-                )
-            ),
-            randomReferencedTables,
-            new RandomColumnsCollection(
-                new UShort(count),
-                new RandomStringCollection(new UShort(count), new UShort(count)),
-                new RandomColumnTypesCollection(
-                    new UShort(count),
-                    new RandomStringCollection(new UShort(count), new UShort(count))
-                )
-            )
+            new UShort(count)
         );
 
         Assert.Equal(

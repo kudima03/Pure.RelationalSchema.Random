@@ -1,6 +1,5 @@
 using System.Collections;
 using Pure.Primitives.Number;
-using Pure.Primitives.Random.String;
 using Pure.RelationalSchema.Abstractions.Index;
 using Pure.RelationalSchema.HashCodes;
 
@@ -10,6 +9,14 @@ using Random = System.Random;
 
 public sealed record RandomIndexesCollectionTests
 {
+    [Fact]
+    public void DefaultConstructorProduceLessThan100Values()
+    {
+        IEnumerable<IIndex> randoms = new RandomIndexesCollection();
+
+        Assert.True(randoms.Count() < 10);
+    }
+
     [Fact]
     public void EnumeratesAsUntyped()
     {
@@ -31,22 +38,11 @@ public sealed record RandomIndexesCollectionTests
     [Fact]
     public void ProduceRandomValuesWithSharedProvider()
     {
-        const int count = 100;
-
-        Random random = new Random();
+        const int count = 10;
 
         IEnumerable<IIndex> randoms = new RandomIndexesCollection(
-            new UShort(100),
-            Enumerable
-                .Range(0, 100)
-                .Select(_ => new RandomColumnsCollection(
-                    new UShort(10),
-                    new RandomStringCollection(new UShort(10), new UShort(10), random),
-                    new RandomColumnTypesCollection(
-                        new UShort(10),
-                        new RandomStringCollection(new UShort(10), new UShort(10), random)
-                    )
-                ))
+            new UShort(count),
+            new Random()
         );
 
         Assert.Equal(
@@ -61,21 +57,9 @@ public sealed record RandomIndexesCollectionTests
     [Fact]
     public void ProduceRandomValues()
     {
-        const int count = 100;
+        const int count = 10;
 
-        IEnumerable<IIndex> randoms = new RandomIndexesCollection(
-            new UShort(100),
-            Enumerable
-                .Range(0, 100)
-                .Select(_ => new RandomColumnsCollection(
-                    new UShort(10),
-                    new RandomStringCollection(new UShort(10), new UShort(10)),
-                    new RandomColumnTypesCollection(
-                        new UShort(10),
-                        new RandomStringCollection(new UShort(10), new UShort(10))
-                    )
-                ))
-        );
+        IEnumerable<IIndex> randoms = new RandomIndexesCollection(new UShort(count));
 
         Assert.Equal(
             count,

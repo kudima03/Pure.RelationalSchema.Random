@@ -1,6 +1,4 @@
 using Pure.HashCodes;
-using Pure.Primitives.Number;
-using Pure.Primitives.Random.String;
 using Pure.RelationalSchema.Abstractions.Table;
 using Pure.RelationalSchema.HashCodes;
 
@@ -10,6 +8,16 @@ using Random = System.Random;
 
 public sealed record RandomTableTests
 {
+    [Fact]
+    public void DefaultConstructorProduceNameLessThan100Symbols()
+    {
+        IEnumerable<ITable> randoms = Enumerable
+            .Range(0, 100)
+            .Select(_ => new RandomTable());
+
+        Assert.True(randoms.All(x => x.Name.TextValue.Length < 10));
+    }
+
     [Fact]
     public void InitializeNameAsCached()
     {
@@ -25,16 +33,7 @@ public sealed record RandomTableTests
     [Fact]
     public void InitializeColumnsAsCached()
     {
-        ITable table = new RandomTable(
-            new RandomColumnsCollection(
-                new UShort(10),
-                new RandomStringCollection(new UShort(10), new UShort(10)),
-                new RandomColumnTypesCollection(
-                    new UShort(10),
-                    new RandomStringCollection(new UShort(10), new UShort(10))
-                )
-            )
-        );
+        ITable table = new RandomTable();
 
         Assert.Equal(
             new AggregatedHash(table.Columns.Select(x => new ColumnHash(x))),
@@ -46,21 +45,7 @@ public sealed record RandomTableTests
     [Fact]
     public void InitializeIndexesAsCached()
     {
-        ITable table = new RandomTable(
-            new RandomIndexesCollection(
-                new UShort(10),
-                Enumerable
-                    .Range(0, 10)
-                    .Select(_ => new RandomColumnsCollection(
-                        new UShort(10),
-                        new RandomStringCollection(new UShort(10), new UShort(10)),
-                        new RandomColumnTypesCollection(
-                            new UShort(10),
-                            new RandomStringCollection(new UShort(10), new UShort(10))
-                        )
-                    ))
-            )
-        );
+        ITable table = new RandomTable();
 
         Assert.Equal(
             new AggregatedHash(table.Indexes.Select(x => new IndexHash(x))),
@@ -78,29 +63,7 @@ public sealed record RandomTableTests
 
         IEnumerable<ITable> randoms = Enumerable
             .Range(0, count)
-            .Select(_ => new RandomTable(
-                new RandomColumnsCollection(
-                    new UShort(5),
-                    new RandomStringCollection(new UShort(10), new UShort(10), random),
-                    new RandomColumnTypesCollection(
-                        new UShort(10),
-                        new RandomStringCollection(new UShort(10), new UShort(10), random)
-                    )
-                ),
-                new RandomIndexesCollection(
-                    new UShort(5),
-                    Enumerable
-                        .Range(0, 5)
-                        .Select(_ => new RandomColumnsCollection(
-                            new UShort(10),
-                            new RandomStringCollection(new UShort(10), new UShort(10)),
-                            new RandomColumnTypesCollection(
-                                new UShort(10),
-                                new RandomStringCollection(new UShort(10), new UShort(10))
-                            )
-                        ))
-                )
-            ));
+            .Select(_ => new RandomTable(random));
 
         Assert.Equal(
             count,
@@ -118,29 +81,7 @@ public sealed record RandomTableTests
 
         IEnumerable<ITable> randoms = Enumerable
             .Range(0, count)
-            .Select(_ => new RandomTable(
-                new RandomColumnsCollection(
-                    new UShort(5),
-                    new RandomStringCollection(new UShort(10), new UShort(10)),
-                    new RandomColumnTypesCollection(
-                        new UShort(10),
-                        new RandomStringCollection(new UShort(10), new UShort(10))
-                    )
-                ),
-                new RandomIndexesCollection(
-                    new UShort(5),
-                    Enumerable
-                        .Range(0, 5)
-                        .Select(_ => new RandomColumnsCollection(
-                            new UShort(10),
-                            new RandomStringCollection(new UShort(10), new UShort(10)),
-                            new RandomColumnTypesCollection(
-                                new UShort(10),
-                                new RandomStringCollection(new UShort(10), new UShort(10))
-                            )
-                        ))
-                )
-            ));
+            .Select(_ => new RandomTable());
 
         Assert.Equal(
             count,
