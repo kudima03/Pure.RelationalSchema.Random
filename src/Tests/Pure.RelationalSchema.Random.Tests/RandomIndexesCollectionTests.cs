@@ -11,6 +11,14 @@ using Random = System.Random;
 public sealed record RandomIndexesCollectionTests
 {
     [Fact]
+    public void DefaultConstructorProduceLessThan100Values()
+    {
+        IEnumerable<IIndex> randoms = new RandomIndexesCollection();
+
+        Assert.True(randoms.Count() < 100);
+    }
+
+    [Fact]
     public void EnumeratesAsUntyped()
     {
         const int count = 5;
