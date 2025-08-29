@@ -11,6 +11,14 @@ using Random = System.Random;
 public sealed record RandomColumnsCollectionTests
 {
     [Fact]
+    public void DefaultConstructorProduceLessThan100Values()
+    {
+        IEnumerable<IColumn> randoms = new RandomColumnsCollection();
+
+        Assert.True(randoms.Count() < 100);
+    }
+
+    [Fact]
     public void EnumeratesAsUntyped()
     {
         const int count = 30;
