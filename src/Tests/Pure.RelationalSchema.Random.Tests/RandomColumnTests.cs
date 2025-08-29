@@ -82,18 +82,7 @@ public sealed record RandomColumnTests
 
         IEnumerable<IColumn> randomColumns = Enumerable
             .Range(0, count)
-            .Select(_ => new RandomColumn(
-                new RandomString(
-                    new RandomUShort(new MinUshort(), new UShort(100), random),
-                    random
-                ),
-                new RandomColumnType(
-                    new RandomString(
-                        new RandomUShort(new MinUshort(), new UShort(100), random),
-                        random
-                    )
-                )
-            ));
+            .Select(_ => new RandomColumn(random));
 
         Assert.Equal(
             count,
@@ -111,12 +100,7 @@ public sealed record RandomColumnTests
 
         IEnumerable<IColumn> randomColumns = Enumerable
             .Range(0, count)
-            .Select(_ => new RandomColumn(
-                new RandomString(new RandomUShort(new MinUshort(), new UShort(100))),
-                new RandomColumnType(
-                    new RandomString(new RandomUShort(new MinUshort(), new UShort(100)))
-                )
-            ));
+            .Select(_ => new RandomColumn());
 
         Assert.Equal(
             count,

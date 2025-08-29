@@ -43,14 +43,7 @@ public sealed record RandomColumnsCollectionTests
 
         Random random = new Random();
 
-        IEnumerable<IColumn> randomColumnTypes = new RandomColumnsCollection(
-            new UShort(count),
-            new RandomStringCollection(new UShort(count), new UShort(count), random),
-            new RandomColumnTypesCollection(
-                new UShort(count),
-                new RandomStringCollection(new UShort(count), new UShort(count), random)
-            )
-        );
+        IEnumerable<IColumn> randomColumnTypes = new RandomColumnsCollection(new UShort(count), random);
 
         Assert.Equal(
             count,

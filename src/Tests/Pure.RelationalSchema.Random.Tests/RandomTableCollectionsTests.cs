@@ -39,52 +39,7 @@ public sealed record RandomTableCollectionsTests
     {
         const int count = 5;
 
-        Random random = new Random();
-
-        IEnumerable<ITable> randoms = new RandomTablesCollection(
-            new UShort(count),
-            Enumerable
-                .Range(0, count)
-                .Select(_ => new RandomColumnsCollection(
-                    new UShort(count),
-                    new RandomStringCollection(
-                        new UShort(count),
-                        new UShort(count),
-                        random
-                    ),
-                    new RandomColumnTypesCollection(
-                        new UShort(count),
-                        new RandomStringCollection(
-                            new UShort(count),
-                            new UShort(count),
-                            random
-                        )
-                    )
-                )),
-            Enumerable
-                .Range(0, count)
-                .Select(_ => new RandomIndexesCollection(
-                    new UShort(count),
-                    Enumerable
-                        .Range(0, count)
-                        .Select(_ => new RandomColumnsCollection(
-                            new UShort(count),
-                            new RandomStringCollection(
-                                new UShort(count),
-                                new UShort(count),
-                                random
-                            ),
-                            new RandomColumnTypesCollection(
-                                new UShort(count),
-                                new RandomStringCollection(
-                                    new UShort(count),
-                                    new UShort(count),
-                                    random
-                                )
-                            )
-                        ))
-                ))
-        );
+        IEnumerable<ITable> randoms = new RandomTablesCollection(new UShort(count), new Random());
 
         Assert.Equal(
             count,
@@ -100,40 +55,7 @@ public sealed record RandomTableCollectionsTests
     {
         const int count = 5;
 
-        IEnumerable<ITable> randoms = new RandomTablesCollection(
-            new UShort(count),
-            Enumerable
-                .Range(0, count)
-                .Select(_ => new RandomColumnsCollection(
-                    new UShort(count),
-                    new RandomStringCollection(new UShort(count), new UShort(count)),
-                    new RandomColumnTypesCollection(
-                        new UShort(count),
-                        new RandomStringCollection(new UShort(count), new UShort(count))
-                    )
-                )),
-            Enumerable
-                .Range(0, count)
-                .Select(_ => new RandomIndexesCollection(
-                    new UShort(count),
-                    Enumerable
-                        .Range(0, count)
-                        .Select(_ => new RandomColumnsCollection(
-                            new UShort(count),
-                            new RandomStringCollection(
-                                new UShort(count),
-                                new UShort(count)
-                            ),
-                            new RandomColumnTypesCollection(
-                                new UShort(count),
-                                new RandomStringCollection(
-                                    new UShort(count),
-                                    new UShort(count)
-                                )
-                            )
-                        ))
-                ))
-        );
+        IEnumerable<ITable> randoms = new RandomTablesCollection(new UShort(count));
 
         Assert.Equal(
             count,

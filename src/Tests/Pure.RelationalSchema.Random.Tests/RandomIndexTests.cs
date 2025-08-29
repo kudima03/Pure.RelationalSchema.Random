@@ -13,7 +13,7 @@ public sealed record RandomIndexTests
     [Fact]
     public void InitializeColumnsAsCached()
     {
-        IIndex index = new RandomIndex(new RandomColumnsCollection(new UShort(5)));
+        IIndex index = new RandomIndex(new RandomColumnsCollection());
 
         Assert.Equal(
             new AggregatedHash(index.Columns.Select(x => new ColumnHash(x))),
@@ -43,17 +43,7 @@ public sealed record RandomIndexTests
 
         IEnumerable<IIndex> randoms = Enumerable
             .Range(0, count)
-            .Select(_ => new RandomIndex(
-                new RandomColumnsCollection(
-                    new UShort(5),
-                    new RandomStringCollection(new UShort(10), new UShort(10), random),
-                    new RandomColumnTypesCollection(
-                        new UShort(10),
-                        new RandomStringCollection(new UShort(10), new UShort(10), random)
-                    )
-                ),
-                random
-            ));
+            .Select(_ => new RandomIndex(random));
 
         Assert.Equal(
             count,
@@ -71,16 +61,7 @@ public sealed record RandomIndexTests
 
         IEnumerable<IIndex> randoms = Enumerable
             .Range(0, count)
-            .Select(_ => new RandomIndex(
-                new RandomColumnsCollection(
-                    new UShort(5),
-                    new RandomStringCollection(new UShort(10), new UShort(10)),
-                    new RandomColumnTypesCollection(
-                        new UShort(10),
-                        new RandomStringCollection(new UShort(10), new UShort(10))
-                    )
-                )
-            ));
+            .Select(_ => new RandomIndex());
 
         Assert.Equal(
             count,

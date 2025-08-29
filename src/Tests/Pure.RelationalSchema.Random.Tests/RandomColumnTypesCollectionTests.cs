@@ -65,10 +65,7 @@ public sealed record RandomColumnTypesCollectionTests
     {
         const int count = 100;
 
-        IEnumerable<IColumnType> randomColumnTypes = new RandomColumnTypesCollection(
-            new UShort(count),
-            new RandomStringCollection(new UShort(count), new UShort(50))
-        );
+        IEnumerable<IColumnType> randomColumnTypes = new RandomColumnTypesCollection(new UShort(count));
 
         Assert.Equal(
             count,

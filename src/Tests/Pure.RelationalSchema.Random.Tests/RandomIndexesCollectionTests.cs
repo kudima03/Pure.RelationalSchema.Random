@@ -41,21 +41,7 @@ public sealed record RandomIndexesCollectionTests
     {
         const int count = 100;
 
-        Random random = new Random();
-
-        IEnumerable<IIndex> randoms = new RandomIndexesCollection(
-            new UShort(100),
-            Enumerable
-                .Range(0, 100)
-                .Select(_ => new RandomColumnsCollection(
-                    new UShort(10),
-                    new RandomStringCollection(new UShort(10), new UShort(10), random),
-                    new RandomColumnTypesCollection(
-                        new UShort(10),
-                        new RandomStringCollection(new UShort(10), new UShort(10), random)
-                    )
-                ))
-        );
+        IEnumerable<IIndex> randoms = new RandomIndexesCollection(new UShort(count), new Random());
 
         Assert.Equal(
             count,
@@ -71,19 +57,7 @@ public sealed record RandomIndexesCollectionTests
     {
         const int count = 100;
 
-        IEnumerable<IIndex> randoms = new RandomIndexesCollection(
-            new UShort(100),
-            Enumerable
-                .Range(0, 100)
-                .Select(_ => new RandomColumnsCollection(
-                    new UShort(10),
-                    new RandomStringCollection(new UShort(10), new UShort(10)),
-                    new RandomColumnTypesCollection(
-                        new UShort(10),
-                        new RandomStringCollection(new UShort(10), new UShort(10))
-                    )
-                ))
-        );
+        IEnumerable<IIndex> randoms = new RandomIndexesCollection(new UShort(count));
 
         Assert.Equal(
             count,
