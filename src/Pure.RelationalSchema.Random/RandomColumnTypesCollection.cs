@@ -1,6 +1,7 @@
 using System.Collections;
 using Pure.Primitives.Abstractions.Number;
 using Pure.Primitives.Abstractions.String;
+using Pure.Primitives.Number;
 using Pure.Primitives.Random.Number;
 using Pure.Primitives.Random.String;
 using Pure.RelationalSchema.Abstractions.ColumnType;
@@ -19,7 +20,7 @@ public sealed record RandomColumnTypesCollection : IEnumerable<IColumnType>
         : this(Random.Shared) { }
 
     public RandomColumnTypesCollection(Random random)
-        : this(new RandomUShort(random), random) { }
+        : this(new RandomUShort(new MinUshort(), new UShort(100), random), random) { }
 
     public RandomColumnTypesCollection(INumber<ushort> count)
         : this(count, Random.Shared) { }

@@ -9,6 +9,14 @@ namespace Pure.RelationalSchema.Random.Tests;
 public sealed record RandomColumnTypesCollectionTests
 {
     [Fact]
+    public void DefaultConstructorProduceLessThan100Values()
+    {
+        IEnumerable<IColumnType> randoms = new RandomColumnTypesCollection();
+
+        Assert.True(randoms.Count() < 100);
+    }
+
+    [Fact]
     public void EnumeratesAsUntyped()
     {
         const int count = 100;
