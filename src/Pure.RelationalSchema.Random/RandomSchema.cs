@@ -1,4 +1,6 @@
 using Pure.Primitives.Abstractions.String;
+using Pure.Primitives.Number;
+using Pure.Primitives.Random.Number;
 using Pure.Primitives.Random.String;
 using Pure.RelationalSchema.Abstractions.ForeignKey;
 using Pure.RelationalSchema.Abstractions.Schema;
@@ -19,7 +21,10 @@ public sealed record RandomSchema : ISchema
 
     public RandomSchema(Random random)
         : this(
-            new RandomString(random),
+            new RandomString(
+                new RandomUShort(new MinUshort(), new UShort(100), random),
+                random
+            ),
             new RandomTablesCollection(random),
             new RandomForeignKeysCollection(random)
         )

@@ -11,6 +11,16 @@ using Random = System.Random;
 public sealed record RandomSchemaTests
 {
     [Fact]
+    public void DefaultConstructorProduceNameLessThan100Symbols()
+    {
+        IEnumerable<ISchema> randoms = Enumerable
+            .Range(0, 100)
+            .Select(_ => new RandomSchema());
+
+        Assert.True(randoms.All(x => x.Name.TextValue.Length < 100));
+    }
+
+    [Fact]
     public void InitializeNameAsCached()
     {
         ISchema schema = new RandomSchema(new RandomString(new UShort(20)));
