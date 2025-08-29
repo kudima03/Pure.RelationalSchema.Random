@@ -11,6 +11,14 @@ using Random = System.Random;
 public sealed record RandomSchemasCollectionsTests
 {
     [Fact]
+    public void DefaultConstructorProduceLessThan100Values()
+    {
+        IEnumerable<ISchema> randoms = new RandomSchemasCollection();
+
+        Assert.True(randoms.Count() < 100);
+    }
+
+    [Fact]
     public void EnumeratesAsUntyped()
     {
         IEnumerable randoms = new RandomSchemasCollection();

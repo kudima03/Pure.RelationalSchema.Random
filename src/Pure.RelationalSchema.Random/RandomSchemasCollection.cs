@@ -1,6 +1,7 @@
 using System.Collections;
 using Pure.Primitives.Abstractions.Number;
 using Pure.Primitives.Abstractions.String;
+using Pure.Primitives.Number;
 using Pure.Primitives.Random.Number;
 using Pure.Primitives.Random.String;
 using Pure.RelationalSchema.Abstractions.ForeignKey;
@@ -25,7 +26,7 @@ public sealed record RandomSchemasCollection : IEnumerable<ISchema>
         : this(Random.Shared) { }
 
     public RandomSchemasCollection(Random random)
-        : this(new RandomUShort(random), random) { }
+        : this(new RandomUShort(new MinUshort(), new UShort(100), random), random) { }
 
     public RandomSchemasCollection(INumber<ushort> count)
         : this(count, Random.Shared) { }
