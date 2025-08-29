@@ -12,6 +12,16 @@ using Random = System.Random;
 public sealed record RandomColumnTests
 {
     [Fact]
+    public void DefaultConstructorProduceNameLessThan100Symbols()
+    {
+        IEnumerable<IColumn> randoms = Enumerable
+            .Range(0, 100)
+            .Select(_ => new RandomColumn());
+
+        Assert.True(randoms.All(x => x.Name.TextValue.Length < 100));
+    }
+
+    [Fact]
     public void InitializeFromRandomName()
     {
         RandomString randomName = new RandomString(new UShort(10));

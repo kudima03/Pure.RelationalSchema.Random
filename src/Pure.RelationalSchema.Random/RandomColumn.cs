@@ -1,4 +1,5 @@
 using Pure.Primitives.Abstractions.String;
+using Pure.Primitives.Number;
 using Pure.Primitives.Random.Number;
 using Pure.Primitives.Random.String;
 using Pure.RelationalSchema.Abstractions.Column;
@@ -15,7 +16,10 @@ public sealed record RandomColumn : IColumn
 
     public RandomColumn(Random random)
         : this(
-            new RandomString(new RandomUShort(random), random),
+            new RandomString(
+                new RandomUShort(new MinUshort(), new UShort(100), random),
+                random
+            ),
             new RandomColumnType(random)
         )
     { }
