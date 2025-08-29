@@ -9,6 +9,16 @@ using Random = System.Random;
 public sealed record RandomColumnTypeTests
 {
     [Fact]
+    public void DefaultConstructorProduceNameLessThan100Symbols()
+    {
+        IEnumerable<IColumnType> columnType = Enumerable
+            .Range(0, 100)
+            .Select(_ => new RandomColumnType());
+
+        Assert.True(columnType.All(x => x.Name.TextValue.Length < 100));
+    }
+
+    [Fact]
     public void InitializeNameAsCached()
     {
         IColumnType columnType = new RandomColumnType();
