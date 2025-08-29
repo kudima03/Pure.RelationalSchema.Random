@@ -1,6 +1,5 @@
 using System.Collections;
 using Pure.Primitives.Number;
-using Pure.Primitives.Random.String;
 using Pure.RelationalSchema.Abstractions.ForeignKey;
 using Pure.RelationalSchema.HashCodes;
 
@@ -15,7 +14,7 @@ public sealed record RandomForeignKeysCollectionsTests
     {
         IEnumerable<IForeignKey> randoms = new RandomForeignKeysCollection();
 
-        Assert.True(randoms.Count() < 100);
+        Assert.True(randoms.Count() < 10);
     }
 
     [Fact]
@@ -41,7 +40,10 @@ public sealed record RandomForeignKeysCollectionsTests
 
         Random random = new Random();
 
-        IEnumerable<IForeignKey> foreignKeys = new RandomForeignKeysCollection(new UShort(count), random);
+        IEnumerable<IForeignKey> foreignKeys = new RandomForeignKeysCollection(
+            new UShort(count),
+            random
+        );
 
         Assert.Equal(
             count,
@@ -57,7 +59,9 @@ public sealed record RandomForeignKeysCollectionsTests
     {
         const int count = 5;
 
-        IEnumerable<IForeignKey> foreignKeys = new RandomForeignKeysCollection(new UShort(count));
+        IEnumerable<IForeignKey> foreignKeys = new RandomForeignKeysCollection(
+            new UShort(count)
+        );
 
         Assert.Equal(
             count,

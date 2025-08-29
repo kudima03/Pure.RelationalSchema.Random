@@ -22,7 +22,7 @@ public sealed record RandomIndexesCollection : IEnumerable<IIndex>
         : this(Random.Shared) { }
 
     public RandomIndexesCollection(Random random)
-        : this(new RandomUShort(new MinUshort(), new UShort(100), random), random) { }
+        : this(new RandomUShort(new UShort(1), new UShort(10), random), random) { }
 
     public RandomIndexesCollection(INumber<ushort> count)
         : this(count, Random.Shared) { }

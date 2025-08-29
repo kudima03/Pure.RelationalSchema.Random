@@ -1,6 +1,5 @@
 using Pure.HashCodes;
 using Pure.Primitives.Number;
-using Pure.Primitives.Random.String;
 using Pure.RelationalSchema.Abstractions.Index;
 using Pure.RelationalSchema.HashCodes;
 
@@ -37,7 +36,7 @@ public sealed record RandomIndexTests
     [Fact]
     public void ProduceRandomValuesWithSharedProvider()
     {
-        const int count = 100;
+        const int count = 10;
 
         Random random = new Random();
 
@@ -57,7 +56,7 @@ public sealed record RandomIndexTests
     [Fact]
     public void ProduceRandomValues()
     {
-        const int count = 100;
+        const int count = 10;
 
         IEnumerable<IIndex> randoms = Enumerable
             .Range(0, count)

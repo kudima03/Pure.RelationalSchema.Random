@@ -1,6 +1,5 @@
 using System.Collections;
 using Pure.Primitives.Number;
-using Pure.Primitives.Random.String;
 using Pure.RelationalSchema.Abstractions.Schema;
 using Pure.RelationalSchema.HashCodes;
 
@@ -15,7 +14,7 @@ public sealed record RandomSchemasCollectionsTests
     {
         IEnumerable<ISchema> randoms = new RandomSchemasCollection();
 
-        Assert.True(randoms.Count() < 100);
+        Assert.True(randoms.Count() < 10);
     }
 
     [Fact]
@@ -39,7 +38,10 @@ public sealed record RandomSchemasCollectionsTests
     {
         const int count = 5;
 
-        IEnumerable<ISchema> randoms = new RandomSchemasCollection(new UShort(count), new Random());
+        IEnumerable<ISchema> randoms = new RandomSchemasCollection(
+            new UShort(count),
+            new Random()
+        );
 
         Assert.Equal(
             count,

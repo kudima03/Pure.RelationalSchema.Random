@@ -26,7 +26,7 @@ public sealed record RandomForeignKeysCollection : IEnumerable<IForeignKey>
         : this(Random.Shared) { }
 
     public RandomForeignKeysCollection(Random random)
-        : this(new RandomUShort(new MinUshort(), new UShort(100), random), random) { }
+        : this(new RandomUShort(new UShort(1), new UShort(10), random), random) { }
 
     public RandomForeignKeysCollection(INumber<ushort> count)
         : this(count, Random.Shared) { }

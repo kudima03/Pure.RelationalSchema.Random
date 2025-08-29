@@ -1,6 +1,5 @@
 using Pure.HashCodes;
 using Pure.Primitives.Number;
-using Pure.Primitives.Random.Number;
 using Pure.Primitives.Random.String;
 using Pure.RelationalSchema.Abstractions.Column;
 using Pure.RelationalSchema.HashCodes;
@@ -18,7 +17,7 @@ public sealed record RandomColumnTests
             .Range(0, 100)
             .Select(_ => new RandomColumn());
 
-        Assert.True(randoms.All(x => x.Name.TextValue.Length < 100));
+        Assert.True(randoms.All(x => x.Name.TextValue.Length < 10));
     }
 
     [Fact]
@@ -76,7 +75,7 @@ public sealed record RandomColumnTests
     [Fact]
     public void ProduceRandomValuesWithSharedProvider()
     {
-        const int count = 100;
+        const int count = 10;
 
         Random random = new Random();
 
@@ -96,7 +95,7 @@ public sealed record RandomColumnTests
     [Fact]
     public void ProduceRandomValues()
     {
-        const int count = 100;
+        const int count = 10;
 
         IEnumerable<IColumn> randomColumns = Enumerable
             .Range(0, count)

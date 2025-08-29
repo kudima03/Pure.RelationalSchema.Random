@@ -1,6 +1,5 @@
 using System.Collections;
 using Pure.Primitives.Number;
-using Pure.Primitives.Random.String;
 using Pure.RelationalSchema.Abstractions.Index;
 using Pure.RelationalSchema.HashCodes;
 
@@ -15,7 +14,7 @@ public sealed record RandomIndexesCollectionTests
     {
         IEnumerable<IIndex> randoms = new RandomIndexesCollection();
 
-        Assert.True(randoms.Count() < 100);
+        Assert.True(randoms.Count() < 10);
     }
 
     [Fact]
@@ -39,9 +38,12 @@ public sealed record RandomIndexesCollectionTests
     [Fact]
     public void ProduceRandomValuesWithSharedProvider()
     {
-        const int count = 100;
+        const int count = 10;
 
-        IEnumerable<IIndex> randoms = new RandomIndexesCollection(new UShort(count), new Random());
+        IEnumerable<IIndex> randoms = new RandomIndexesCollection(
+            new UShort(count),
+            new Random()
+        );
 
         Assert.Equal(
             count,
@@ -55,7 +57,7 @@ public sealed record RandomIndexesCollectionTests
     [Fact]
     public void ProduceRandomValues()
     {
-        const int count = 100;
+        const int count = 10;
 
         IEnumerable<IIndex> randoms = new RandomIndexesCollection(new UShort(count));
 

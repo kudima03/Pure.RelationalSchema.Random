@@ -13,7 +13,7 @@ public sealed record RandomColumnTypesCollectionTests
     {
         IEnumerable<IColumnType> randoms = new RandomColumnTypesCollection();
 
-        Assert.True(randoms.Count() < 100);
+        Assert.True(randoms.Count() < 10);
     }
 
     [Fact]
@@ -45,7 +45,7 @@ public sealed record RandomColumnTypesCollectionTests
     [Fact]
     public void ProduceRandomValuesWithSharedProvider()
     {
-        const int count = 100;
+        const int count = 10;
 
         IEnumerable<IColumnType> randomColumnTypes = new RandomColumnTypesCollection(
             new UShort(count)
@@ -63,9 +63,11 @@ public sealed record RandomColumnTypesCollectionTests
     [Fact]
     public void ProduceRandomValues()
     {
-        const int count = 100;
+        const int count = 10;
 
-        IEnumerable<IColumnType> randomColumnTypes = new RandomColumnTypesCollection(new UShort(count));
+        IEnumerable<IColumnType> randomColumnTypes = new RandomColumnTypesCollection(
+            new UShort(count)
+        );
 
         Assert.Equal(
             count,

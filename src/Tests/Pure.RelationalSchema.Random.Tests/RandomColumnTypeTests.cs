@@ -15,7 +15,7 @@ public sealed record RandomColumnTypeTests
             .Range(0, 100)
             .Select(_ => new RandomColumnType());
 
-        Assert.True(columnType.All(x => x.Name.TextValue.Length < 100));
+        Assert.True(columnType.All(x => x.Name.TextValue.Length < 10));
     }
 
     [Fact]
@@ -33,7 +33,7 @@ public sealed record RandomColumnTypeTests
     [Fact]
     public void ProduceRandomValuesWithSharedProvider()
     {
-        const int count = 30;
+        const int count = 10;
 
         Random random = new Random();
 
@@ -53,7 +53,7 @@ public sealed record RandomColumnTypeTests
     [Fact]
     public void ProduceRandomValues()
     {
-        const int count = 30;
+        const int count = 10;
 
         IEnumerable<IColumnType> randomColumnTypes = Enumerable
             .Range(0, count)

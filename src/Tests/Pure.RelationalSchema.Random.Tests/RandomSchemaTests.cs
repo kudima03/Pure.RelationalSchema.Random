@@ -1,6 +1,4 @@
 using Pure.HashCodes;
-using Pure.Primitives.Number;
-using Pure.Primitives.Random.String;
 using Pure.RelationalSchema.Abstractions.Schema;
 using Pure.RelationalSchema.HashCodes;
 
@@ -17,7 +15,7 @@ public sealed record RandomSchemaTests
             .Range(0, 100)
             .Select(_ => new RandomSchema());
 
-        Assert.True(randoms.All(x => x.Name.TextValue.Length < 100));
+        Assert.True(randoms.All(x => x.Name.TextValue.Length < 10));
     }
 
     [Fact]
