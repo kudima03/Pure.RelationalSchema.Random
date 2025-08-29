@@ -11,6 +11,14 @@ using Random = System.Random;
 public sealed record RandomTableCollectionsTests
 {
     [Fact]
+    public void DefaultConstructorProduceLessThan100Values()
+    {
+        IEnumerable<ITable> randoms = new RandomTablesCollection();
+
+        Assert.True(randoms.Count() < 100);
+    }
+
+    [Fact]
     public void EnumeratesAsUntyped()
     {
         IEnumerable randoms = new RandomTablesCollection();
