@@ -20,7 +20,7 @@ public sealed record RandomIndexesCollectionTests
     [Fact]
     public void EnumeratesAsUntyped()
     {
-        const int count = 5;
+        const int count = 10;
 
         IEnumerable randoms = new RandomIndexesCollection(new UShort(count));
 

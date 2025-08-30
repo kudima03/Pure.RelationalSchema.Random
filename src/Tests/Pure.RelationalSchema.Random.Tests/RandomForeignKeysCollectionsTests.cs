@@ -20,7 +20,9 @@ public sealed record RandomForeignKeysCollectionsTests
     [Fact]
     public void EnumeratesAsUntyped()
     {
-        IEnumerable randoms = new RandomForeignKeysCollection(new UShort(10));
+        const ushort count = 10;
+
+        IEnumerable randoms = new RandomForeignKeysCollection(new UShort(count));
 
         ICollection<IForeignKey> casted = [];
 
@@ -30,7 +32,7 @@ public sealed record RandomForeignKeysCollectionsTests
             casted.Add(castedItem);
         }
 
-        Assert.NotEmpty(casted);
+        Assert.Equal(count, casted.Count);
     }
 
     [Fact]
