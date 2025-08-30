@@ -20,7 +20,7 @@ public sealed record RandomColumnTypesCollection : IEnumerable<IColumnType>
         : this(Random.Shared) { }
 
     public RandomColumnTypesCollection(Random random)
-        : this(new RandomUShort(new UShort(1), new UShort(10), random), random) { }
+        : this(new RandomUShort(new MinUshort(), new UShort(10), random), random) { }
 
     public RandomColumnTypesCollection(INumber<ushort> count)
         : this(count, Random.Shared) { }
@@ -30,7 +30,12 @@ public sealed record RandomColumnTypesCollection : IEnumerable<IColumnType>
             count,
             new RandomStringCollection(
                 count,
-                new RandomUShort(new UShort(1), new UShort(10), random),
+                new RandomUShortCollection(
+                    count,
+                    new MinUshort(),
+                    new UShort(100),
+                    random
+                ),
                 random
             )
         )

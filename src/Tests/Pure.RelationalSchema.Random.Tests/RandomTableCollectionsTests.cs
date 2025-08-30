@@ -20,7 +20,9 @@ public sealed record RandomTableCollectionsTests
     [Fact]
     public void EnumeratesAsUntyped()
     {
-        IEnumerable randoms = new RandomTablesCollection();
+        const ushort count = 10;
+
+        IEnumerable randoms = new RandomTablesCollection(new UShort(count));
 
         ICollection<ITable> castedIndexes = [];
 
@@ -30,7 +32,7 @@ public sealed record RandomTableCollectionsTests
             castedIndexes.Add(castedIndex);
         }
 
-        Assert.NotEmpty(castedIndexes);
+        Assert.Equal(count, castedIndexes.Count);
     }
 
     [Fact]

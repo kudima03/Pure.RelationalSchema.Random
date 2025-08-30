@@ -22,7 +22,7 @@ public sealed record RandomSchema : ISchema
     public RandomSchema(Random random)
         : this(
             new RandomString(
-                new RandomUShort(new UShort(1), new UShort(10), random),
+                new RandomUShort(new MinUshort(), new UShort(10), random),
                 random
             ),
             new RandomTablesCollection(random),

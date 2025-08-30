@@ -20,7 +20,9 @@ public sealed record RandomSchemasCollectionsTests
     [Fact]
     public void EnumeratesAsUntyped()
     {
-        IEnumerable randoms = new RandomSchemasCollection();
+        const ushort count = 10;
+
+        IEnumerable randoms = new RandomSchemasCollection(new UShort(count));
 
         ICollection<ISchema> casted = [];
 
@@ -30,7 +32,7 @@ public sealed record RandomSchemasCollectionsTests
             casted.Add(castedItem);
         }
 
-        Assert.NotEmpty(casted);
+        Assert.Equal(count, casted.Count);
     }
 
     [Fact]
