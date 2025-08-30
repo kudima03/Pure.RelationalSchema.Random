@@ -30,7 +30,12 @@ public sealed record RandomColumnTypesCollection : IEnumerable<IColumnType>
             count,
             new RandomStringCollection(
                 count,
-                new RandomUShortCollection(count, new MinUshort(), new UShort(100), random),
+                new RandomUShortCollection(
+                    count,
+                    new MinUshort(),
+                    new UShort(100),
+                    random
+                ),
                 random
             )
         )
