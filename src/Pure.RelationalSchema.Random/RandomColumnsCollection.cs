@@ -23,7 +23,7 @@ public sealed record RandomColumnsCollection : IEnumerable<IColumn>
         : this(Random.Shared) { }
 
     public RandomColumnsCollection(Random random)
-        : this(new RandomUShort(new UShort(1), new UShort(10), random), random) { }
+        : this(new RandomUShort(new MinUshort(), new UShort(10), random), random) { }
 
     public RandomColumnsCollection(INumber<ushort> count)
         : this(count, Random.Shared) { }
@@ -33,7 +33,13 @@ public sealed record RandomColumnsCollection : IEnumerable<IColumn>
             count,
             new RandomStringCollection(
                 count,
-                new RandomUShort(new UShort(1), new UShort(10), random)
+                new RandomUShortCollection(
+                    count,
+                    new MinUshort(),
+                    new UShort(100),
+                    random
+                ),
+                random
             ),
             new RandomColumnTypesCollection(count, random)
         )

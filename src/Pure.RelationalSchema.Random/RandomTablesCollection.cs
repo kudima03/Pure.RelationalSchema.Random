@@ -26,7 +26,7 @@ public sealed record RandomTablesCollection : IEnumerable<ITable>
         : this(Random.Shared) { }
 
     public RandomTablesCollection(Random random)
-        : this(new RandomUShort(new UShort(1), new UShort(10), random), random) { }
+        : this(new RandomUShort(new MinUshort(), new UShort(10), random), random) { }
 
     public RandomTablesCollection(INumber<ushort> count)
         : this(count, Random.Shared) { }
@@ -62,7 +62,7 @@ public sealed record RandomTablesCollection : IEnumerable<ITable>
             Enumerable
                 .Range(0, count.NumberValue)
                 .Select(_ => new RandomString(
-                    new RandomUShort(new UShort(1), new UShort(10), random),
+                    new RandomUShort(new MinUshort(), new UShort(10), random),
                     random
                 )),
             columns,
