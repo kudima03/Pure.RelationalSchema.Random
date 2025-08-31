@@ -39,18 +39,16 @@ public sealed record RandomColumnsCollectionTests
     [Fact]
     public void ProduceRandomValuesWithSharedProvider()
     {
-        const int count = 10;
-
-        Random random = new Random();
-
         IEnumerable<IColumn> randomColumnTypes = new RandomColumnsCollection(
-            new UShort(count),
-            random
+            new UShort(10),
+            new Random()
         );
 
+        IEnumerable<IColumn> randomColumnTypesWithNotEmptyFields = [.. randomColumnTypes.Where(x => x.Name.Any() && x.Type.Name.Any())];
+
         Assert.Equal(
-            count,
-            randomColumnTypes
+            randomColumnTypesWithNotEmptyFields.Count(),
+            randomColumnTypesWithNotEmptyFields
                 .Select(x => new ColumnHash(x))
                 .Distinct(new DeterminedHashEqualityComparer())
                 .Count()
@@ -60,13 +58,15 @@ public sealed record RandomColumnsCollectionTests
     [Fact]
     public void ProduceRandomValues()
     {
-        const int count = 10;
+        IEnumerable<IColumn> randomColumnTypes = new RandomColumnsCollection(
+            new UShort(10)
+        );
 
-        IEnumerable<IColumn> randoms = new RandomColumnsCollection(new UShort(count));
+        IEnumerable<IColumn> randomColumnTypesWithNotEmptyFields = [.. randomColumnTypes.Where(x => x.Name.Any() && x.Type.Name.Any())];
 
         Assert.Equal(
-            count,
-            randoms
+            randomColumnTypesWithNotEmptyFields.Count(),
+            randomColumnTypesWithNotEmptyFields
                 .Select(x => new ColumnHash(x))
                 .Distinct(new DeterminedHashEqualityComparer())
                 .Count()

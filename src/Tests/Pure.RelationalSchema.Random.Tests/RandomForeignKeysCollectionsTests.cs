@@ -40,11 +40,9 @@ public sealed record RandomForeignKeysCollectionsTests
     {
         const int count = 5;
 
-        Random random = new Random();
-
         IEnumerable<IForeignKey> foreignKeys = new RandomForeignKeysCollection(
             new UShort(count),
-            random
+            new Random()
         );
 
         Assert.Equal(

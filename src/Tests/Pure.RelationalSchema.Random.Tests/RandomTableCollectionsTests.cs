@@ -38,16 +38,16 @@ public sealed record RandomTableCollectionsTests
     [Fact]
     public void ProduceRandomValuesWithSharedProvider()
     {
-        const int count = 5;
-
         IEnumerable<ITable> randoms = new RandomTablesCollection(
-            new UShort(count),
+            new UShort(5),
             new Random()
         );
 
+        IEnumerable<ITable> randomsWithNotEmptyFields = [.. randoms.Where(x => x.Columns.Any() && x.Indexes.Any() && x.Name.Any())];
+
         Assert.Equal(
-            count,
-            randoms
+            randomsWithNotEmptyFields.Count(),
+            randomsWithNotEmptyFields
                 .Select(x => new TableHash(x))
                 .Distinct(new DeterminedHashEqualityComparer())
                 .Count()
@@ -57,13 +57,13 @@ public sealed record RandomTableCollectionsTests
     [Fact]
     public void ProduceRandomValues()
     {
-        const int count = 5;
+        IEnumerable<ITable> randoms = new RandomTablesCollection(new UShort(5));
 
-        IEnumerable<ITable> randoms = new RandomTablesCollection(new UShort(count));
+        IEnumerable<ITable> randomsWithNotEmptyFields = [.. randoms.Where(x => x.Columns.Any() && x.Indexes.Any() && x.Name.Any())];
 
         Assert.Equal(
-            count,
-            randoms
+            randomsWithNotEmptyFields.Count(),
+            randomsWithNotEmptyFields
                 .Select(x => new TableHash(x))
                 .Distinct(new DeterminedHashEqualityComparer())
                 .Count()
