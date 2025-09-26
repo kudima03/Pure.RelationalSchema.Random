@@ -8,52 +8,73 @@ using Random = System.Random;
 
 public sealed record RandomForeignKey : IForeignKey
 {
+    private readonly Lazy<IEnumerable<IColumn>> _lazyReferencingColumns;
+
+    private readonly Lazy<IEnumerable<IColumn>> _lazyReferencedColumns;
+
     public RandomForeignKey()
         : this(Random.Shared) { }
 
     public RandomForeignKey(Random random)
         : this(
             new RandomTable(random),
-            new RandomColumn(random),
+            new RandomColumnsCollection(random),
             new RandomTable(random),
-            new RandomColumn(random)
+            new RandomColumnsCollection(random)
         )
     { }
 
     public RandomForeignKey(
         RandomTable randomReferencingTable,
-        RandomColumn randomReferencingColumn,
+        RandomColumnsCollection randomReferencingColumns,
         RandomTable randomReferencedTable,
-        RandomColumn randomReferencedColumn
+        RandomColumnsCollection randomReferencedColumns
     )
+
         : this(
-            (ITable)randomReferencingTable,
-            randomReferencingColumn,
+            randomReferencingTable,
+            // Stryker disable once linq
+            randomReferencingColumns.AsEnumerable(),
             randomReferencedTable,
-            randomReferencedColumn
+            // Stryker disable once linq
+            randomReferencedColumns.AsEnumerable()
         )
     { }
 
     internal RandomForeignKey(
         ITable referencingTable,
-        IColumn referencingColumn,
+        IEnumerable<IColumn> referencingColumns,
         ITable referencedTable,
-        IColumn referencedColumn
+        IEnumerable<IColumn> referencedColumns
+    )
+        : this(
+            referencingTable,
+            new Lazy<IEnumerable<IColumn>>(referencingColumns.ToArray),
+            referencedTable,
+            new Lazy<IEnumerable<IColumn>>(referencedColumns.ToArray)
+        )
+    { }
+
+    internal RandomForeignKey(
+        ITable referencingTable,
+        Lazy<IEnumerable<IColumn>> referencingColumns,
+        ITable referencedTable,
+        Lazy<IEnumerable<IColumn>> referencedColumns
     )
     {
         ReferencingTable = referencingTable;
-        ReferencingColumn = referencingColumn;
+        _lazyReferencingColumns = referencingColumns;
         ReferencedTable = referencedTable;
-        ReferencedColumn = referencedColumn;
+        _lazyReferencedColumns = referencedColumns;
     }
 
     public ITable ReferencingTable { get; }
 
-    public IColumn ReferencingColumn { get; }
+    public IEnumerable<IColumn> ReferencingColumns => _lazyReferencingColumns.Value;
 
     public ITable ReferencedTable { get; }
 
-    public IColumn ReferencedColumn { get; }
+    public IEnumerable<IColumn> ReferencedColumns => _lazyReferencedColumns.Value;
 
     public override int GetHashCode()
     {

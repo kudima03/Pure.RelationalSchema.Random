@@ -63,7 +63,10 @@ public sealed record RandomTableTests
             .Range(0, 5)
             .Select(_ => new RandomTable(random));
 
-        IEnumerable<ITable> randomsWithNotEmptyFields = [.. randoms.Where(x => x.Columns.Any() && x.Indexes.Any() && x.Name.Any())];
+        IEnumerable<ITable> randomsWithNotEmptyFields =
+        [
+            .. randoms.Where(x => x.Columns.Any() && x.Indexes.Any() && x.Name.Any()),
+        ];
 
         Assert.Equal(
             randomsWithNotEmptyFields.Count(),
@@ -81,7 +84,10 @@ public sealed record RandomTableTests
             .Range(0, 5)
             .Select(_ => new RandomTable());
 
-        IEnumerable<ITable> randomsWithNotEmptyFields = [.. randoms.Where(x => x.Columns.Any() && x.Indexes.Any() && x.Name.Any())];
+        IEnumerable<ITable> randomsWithNotEmptyFields =
+        [
+            .. randoms.Where(x => x.Columns.Any() && x.Indexes.Any() && x.Name.Any()),
+        ];
 
         Assert.Equal(
             randomsWithNotEmptyFields.Count(),

@@ -16,11 +16,11 @@ public sealed record RandomForeignKeysCollection : IEnumerable<IForeignKey>
 
     private readonly IEnumerable<ITable> _referencingTables;
 
-    private readonly IEnumerable<IColumn> _referencingColumns;
+    private readonly IEnumerable<IEnumerable<IColumn>> _referencingColumns;
 
     private readonly IEnumerable<ITable> _referencedTables;
 
-    private readonly IEnumerable<IColumn> _referencedColumns;
+    private readonly IEnumerable<IEnumerable<IColumn>> _referencedColumns;
 
     public RandomForeignKeysCollection()
         : this(Random.Shared) { }
@@ -35,25 +35,29 @@ public sealed record RandomForeignKeysCollection : IEnumerable<IForeignKey>
         : this(
             count,
             new RandomTablesCollection(count, random),
-            new RandomColumnsCollection(count, random),
+            Enumerable
+                .Repeat(0, count.NumberValue)
+                .Select(_ => new RandomColumnsCollection(count, random)),
             new RandomTablesCollection(count, random),
-            new RandomColumnsCollection(count, random)
+            Enumerable
+                .Repeat(0, count.NumberValue)
+                .Select(_ => new RandomColumnsCollection(count, random))
         )
     { }
 
     public RandomForeignKeysCollection(
         INumber<ushort> count,
         RandomTablesCollection randomReferencingTables,
-        RandomColumnsCollection randomReferencingColumns,
+        IEnumerable<RandomColumnsCollection> randomReferencingColumns,
         RandomTablesCollection randomReferencedTables,
-        RandomColumnsCollection randomReferencedColumns
+        IEnumerable<RandomColumnsCollection> randomReferencedColumns
     )
         // Stryker disable once linq
         : this(
             count,
-            randomReferencingTables.AsEnumerable(),
-            randomReferencingColumns.AsEnumerable(),
-            randomReferencedTables.AsEnumerable(),
+            randomReferencingTables,
+            randomReferencingColumns.Cast<IEnumerable<IColumn>>(),
+            randomReferencedTables,
             randomReferencedColumns.AsEnumerable()
         )
     { }
@@ -61,9 +65,9 @@ public sealed record RandomForeignKeysCollection : IEnumerable<IForeignKey>
     private RandomForeignKeysCollection(
         INumber<ushort> count,
         IEnumerable<ITable> referencingTables,
-        IEnumerable<IColumn> referencingColumns,
+        IEnumerable<IEnumerable<IColumn>> referencingColumns,
         IEnumerable<ITable> referencedTables,
-        IEnumerable<IColumn> referencedColumns
+        IEnumerable<IEnumerable<IColumn>> referencedColumns
     )
     {
         _count = count;
@@ -78,13 +82,13 @@ public sealed record RandomForeignKeysCollection : IEnumerable<IForeignKey>
         using IEnumerator<ITable> referencingTablesEnumerator =
             _referencingTables.GetEnumerator();
 
-        using IEnumerator<IColumn> referencingColumnsEnumerator =
+        using IEnumerator<IEnumerable<IColumn>> referencingColumnsEnumerator =
             _referencingColumns.GetEnumerator();
 
         using IEnumerator<ITable> referencedTablesEnumerator =
             _referencedTables.GetEnumerator();
 
-        using IEnumerator<IColumn> referencedColumnsEnumerator =
+        using IEnumerator<IEnumerable<IColumn>> referencedColumnsEnumerator =
             _referencedColumns.GetEnumerator();
 
         for (int i = 0; i < _count.NumberValue; i++)

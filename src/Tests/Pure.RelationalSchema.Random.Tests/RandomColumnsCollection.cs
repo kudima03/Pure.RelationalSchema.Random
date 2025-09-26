@@ -44,7 +44,10 @@ public sealed record RandomColumnsCollectionTests
             new Random()
         );
 
-        IEnumerable<IColumn> randomColumnTypesWithNotEmptyFields = [.. randomColumnTypes.Where(x => x.Name.Any() && x.Type.Name.Any())];
+        IEnumerable<IColumn> randomColumnTypesWithNotEmptyFields =
+        [
+            .. randomColumnTypes.Where(x => x.Name.Any() && x.Type.Name.Any()),
+        ];
 
         Assert.Equal(
             randomColumnTypesWithNotEmptyFields.Count(),
@@ -62,7 +65,10 @@ public sealed record RandomColumnsCollectionTests
             new UShort(10)
         );
 
-        IEnumerable<IColumn> randomColumnTypesWithNotEmptyFields = [.. randomColumnTypes.Where(x => x.Name.Any() && x.Type.Name.Any())];
+        IEnumerable<IColumn> randomColumnTypesWithNotEmptyFields =
+        [
+            .. randomColumnTypes.Where(x => x.Name.Any() && x.Type.Name.Any()),
+        ];
 
         Assert.Equal(
             randomColumnTypesWithNotEmptyFields.Count(),
