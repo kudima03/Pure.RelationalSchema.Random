@@ -30,10 +30,13 @@ public sealed record RandomForeignKey : IForeignKey
         RandomTable randomReferencedTable,
         RandomColumnsCollection randomReferencedColumns
     )
+
         : this(
             randomReferencingTable,
+            // Stryker disable once linq
             randomReferencingColumns.AsEnumerable(),
             randomReferencedTable,
+            // Stryker disable once linq
             randomReferencedColumns.AsEnumerable()
         )
     { }
