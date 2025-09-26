@@ -1,3 +1,5 @@
+using Pure.HashCodes;
+using Pure.Primitives.Number;
 using Pure.RelationalSchema.Abstractions.ForeignKey;
 using Pure.RelationalSchema.HashCodes;
 
@@ -14,9 +16,9 @@ public sealed record RandomForeignKeyTests
 
         IForeignKey foreignKey = new RandomForeignKey(
             table,
-            new RandomColumn(),
+            new RandomColumnsCollection(new UShort(1)),
             new RandomTable(),
-            new RandomColumn()
+            new RandomColumnsCollection(new UShort(1))
         );
 
         Assert.Equal(
@@ -33,9 +35,9 @@ public sealed record RandomForeignKeyTests
 
         IForeignKey foreignKey = new RandomForeignKey(
             new RandomTable(),
-            new RandomColumn(),
+            new RandomColumnsCollection(new UShort(1)),
             table,
-            new RandomColumn()
+            new RandomColumnsCollection(new UShort(1))
         );
 
         Assert.Equal(
@@ -51,8 +53,12 @@ public sealed record RandomForeignKeyTests
         IForeignKey foreignKey = new RandomForeignKey();
 
         Assert.Equal(
-            new ColumnHash(foreignKey.ReferencingColumn),
-            new ColumnHash(foreignKey.ReferencingColumn),
+            new AggregatedHash(
+                foreignKey.ReferencingColumns.Select(x => new ColumnHash(x))
+            ),
+            new AggregatedHash(
+                foreignKey.ReferencingColumns.Select(x => new ColumnHash(x))
+            ),
             new DeterminedHashEqualityComparer()
         );
     }
@@ -63,8 +69,12 @@ public sealed record RandomForeignKeyTests
         IForeignKey foreignKey = new RandomForeignKey();
 
         Assert.Equal(
-            new ColumnHash(foreignKey.ReferencedColumn),
-            new ColumnHash(foreignKey.ReferencedColumn),
+            new AggregatedHash(
+                foreignKey.ReferencedColumns.Select(x => new ColumnHash(x))
+            ),
+            new AggregatedHash(
+                foreignKey.ReferencedColumns.Select(x => new ColumnHash(x))
+            ),
             new DeterminedHashEqualityComparer()
         );
     }

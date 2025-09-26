@@ -63,7 +63,10 @@ public sealed record RandomSchemaTests
             .Range(0, 5)
             .Select(_ => new RandomSchema(random));
 
-        IEnumerable<ISchema> randomsWithNotEmptyFields = [.. randoms.Where(x => x.ForeignKeys.Any() && x.Tables.Any() && x.Name.Any())];
+        IEnumerable<ISchema> randomsWithNotEmptyFields =
+        [
+            .. randoms.Where(x => x.ForeignKeys.Any() && x.Tables.Any() && x.Name.Any()),
+        ];
 
         Assert.Equal(
             randomsWithNotEmptyFields.Count(),
@@ -81,7 +84,10 @@ public sealed record RandomSchemaTests
             .Range(0, 5)
             .Select(_ => new RandomSchema());
 
-        IEnumerable<ISchema> randomsWithNotEmptyFields = [.. randoms.Where(x => x.ForeignKeys.Any() && x.Tables.Any() && x.Name.Any())];
+        IEnumerable<ISchema> randomsWithNotEmptyFields =
+        [
+            .. randoms.Where(x => x.ForeignKeys.Any() && x.Tables.Any() && x.Name.Any()),
+        ];
 
         Assert.Equal(
             randomsWithNotEmptyFields.Count(),

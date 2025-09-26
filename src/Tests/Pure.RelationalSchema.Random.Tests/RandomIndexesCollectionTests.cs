@@ -43,7 +43,10 @@ public sealed record RandomIndexesCollectionTests
             new Random()
         );
 
-        IEnumerable<IIndex> randomsWithNotEmptyFields = [.. randoms.Where(x => x.Columns.Any())];
+        IEnumerable<IIndex> randomsWithNotEmptyFields =
+        [
+            .. randoms.Where(x => x.Columns.Any()),
+        ];
 
         Assert.Equal(
             randomsWithNotEmptyFields.Count(),
@@ -59,7 +62,10 @@ public sealed record RandomIndexesCollectionTests
     {
         IEnumerable<IIndex> randoms = new RandomIndexesCollection(new UShort(10));
 
-        IEnumerable<IIndex> randomsWithNotEmptyFields = [.. randoms.Where(x => x.Columns.Any())];
+        IEnumerable<IIndex> randomsWithNotEmptyFields =
+        [
+            .. randoms.Where(x => x.Columns.Any()),
+        ];
 
         Assert.Equal(
             randomsWithNotEmptyFields.Count(),

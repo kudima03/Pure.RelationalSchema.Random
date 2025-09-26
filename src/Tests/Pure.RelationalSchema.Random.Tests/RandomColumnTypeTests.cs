@@ -39,7 +39,10 @@ public sealed record RandomColumnTypeTests
             .Range(0, 10)
             .Select(_ => new RandomColumnType(random));
 
-        IEnumerable<IColumnType> randomColumnTypesWithNotEmptyFields = [.. randomColumnTypes.Where(x => x.Name.Any())];
+        IEnumerable<IColumnType> randomColumnTypesWithNotEmptyFields =
+        [
+            .. randomColumnTypes.Where(x => x.Name.Any()),
+        ];
 
         Assert.Equal(
             randomColumnTypesWithNotEmptyFields.Count(),
@@ -59,7 +62,10 @@ public sealed record RandomColumnTypeTests
             .Range(0, count)
             .Select(_ => new RandomColumnType());
 
-        IEnumerable<IColumnType> randomColumnTypesWithNotEmptyFields = [.. randomColumnTypes.Where(x => x.Name.Any())];
+        IEnumerable<IColumnType> randomColumnTypesWithNotEmptyFields =
+        [
+            .. randomColumnTypes.Where(x => x.Name.Any()),
+        ];
 
         Assert.Equal(
             randomColumnTypesWithNotEmptyFields.Count(),
