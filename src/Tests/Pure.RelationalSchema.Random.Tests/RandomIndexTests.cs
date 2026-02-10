@@ -15,8 +15,8 @@ public sealed record RandomIndexTests
         IIndex index = new RandomIndex(new RandomColumnsCollection());
 
         Assert.Equal(
-            new AggregatedHash(index.Columns.Select(x => new ColumnHash(x))),
-            new AggregatedHash(index.Columns.Select(x => new ColumnHash(x))),
+            new DeterminedHash(index.Columns.Select(x => new ColumnHash(x))),
+            new DeterminedHash(index.Columns.Select(x => new ColumnHash(x))),
             new DeterminedHashEqualityComparer()
         );
     }

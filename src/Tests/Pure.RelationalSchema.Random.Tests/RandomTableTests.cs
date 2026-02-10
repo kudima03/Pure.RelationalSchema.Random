@@ -36,8 +36,8 @@ public sealed record RandomTableTests
         ITable table = new RandomTable();
 
         Assert.Equal(
-            new AggregatedHash(table.Columns.Select(x => new ColumnHash(x))),
-            new AggregatedHash(table.Columns.Select(x => new ColumnHash(x))),
+            new DeterminedHash(table.Columns.Select(x => new ColumnHash(x))),
+            new DeterminedHash(table.Columns.Select(x => new ColumnHash(x))),
             new DeterminedHashEqualityComparer()
         );
     }
@@ -48,8 +48,8 @@ public sealed record RandomTableTests
         ITable table = new RandomTable();
 
         Assert.Equal(
-            new AggregatedHash(table.Indexes.Select(x => new IndexHash(x))),
-            new AggregatedHash(table.Indexes.Select(x => new IndexHash(x))),
+            new DeterminedHash(table.Indexes.Select(x => new IndexHash(x))),
+            new DeterminedHash(table.Indexes.Select(x => new IndexHash(x))),
             new DeterminedHashEqualityComparer()
         );
     }
