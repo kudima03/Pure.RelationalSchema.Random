@@ -36,8 +36,8 @@ public sealed record RandomSchemaTests
         ISchema schema = new RandomSchema();
 
         Assert.Equal(
-            new AggregatedHash(schema.Tables.Select(x => new TableHash(x))),
-            new AggregatedHash(schema.Tables.Select(x => new TableHash(x))),
+            new DeterminedHash(schema.Tables.Select(x => new TableHash(x))),
+            new DeterminedHash(schema.Tables.Select(x => new TableHash(x))),
             new DeterminedHashEqualityComparer()
         );
     }
@@ -48,8 +48,8 @@ public sealed record RandomSchemaTests
         ISchema schema = new RandomSchema();
 
         Assert.Equal(
-            new AggregatedHash(schema.ForeignKeys.Select(x => new ForeignKeyHash(x))),
-            new AggregatedHash(schema.ForeignKeys.Select(x => new ForeignKeyHash(x))),
+            new DeterminedHash(schema.ForeignKeys.Select(x => new ForeignKeyHash(x))),
+            new DeterminedHash(schema.ForeignKeys.Select(x => new ForeignKeyHash(x))),
             new DeterminedHashEqualityComparer()
         );
     }

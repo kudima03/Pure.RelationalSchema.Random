@@ -53,10 +53,10 @@ public sealed record RandomForeignKeyTests
         IForeignKey foreignKey = new RandomForeignKey();
 
         Assert.Equal(
-            new AggregatedHash(
+            new DeterminedHash(
                 foreignKey.ReferencingColumns.Select(x => new ColumnHash(x))
             ),
-            new AggregatedHash(
+            new DeterminedHash(
                 foreignKey.ReferencingColumns.Select(x => new ColumnHash(x))
             ),
             new DeterminedHashEqualityComparer()
@@ -69,10 +69,10 @@ public sealed record RandomForeignKeyTests
         IForeignKey foreignKey = new RandomForeignKey();
 
         Assert.Equal(
-            new AggregatedHash(
+            new DeterminedHash(
                 foreignKey.ReferencedColumns.Select(x => new ColumnHash(x))
             ),
-            new AggregatedHash(
+            new DeterminedHash(
                 foreignKey.ReferencedColumns.Select(x => new ColumnHash(x))
             ),
             new DeterminedHashEqualityComparer()
