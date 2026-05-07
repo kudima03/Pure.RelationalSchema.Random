@@ -15,7 +15,7 @@
     <PackageProjectUrl>https://github.com/kudima03/Pure.RelationalSchema.Random</PackageProjectUrl>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Pure.Primitives.Random" Version="0.8.0" />
+    <PackageReference Include="Pure.Primitives.Random" Version="0.8.1" />
     <PackageReference Include="Pure.RelationalSchema.Abstractions" Version="1.2.0" />
   </ItemGroup>
 </Project>
