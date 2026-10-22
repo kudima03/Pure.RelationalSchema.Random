@@ -6,6 +6,16 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
 
+## [1.2.0] — 2026-10-22
+
+### Changed
+
+- Updated `Pure.Primitives.Random` dependency from 0.8.3 to 0.9.0.
+
+### Added
+
+- The NuGet package now includes `README.md` as its package readme.
+
 ## [1.1.1] — 2026-08-04
 
 - Maintenance release: dependency and build updates.
