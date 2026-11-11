@@ -6,6 +6,17 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
 
+## [1.3.0] — 2026-11-11
+
+### Added
+
+- Package now also targets `net11.0`.
+
+### Changed
+
+- Updated `Pure.Primitives.Random` dependency from 0.9.0 to 0.10.0.
+- Updated `Pure.RelationalSchema.Abstractions` dependency from 1.2.0 to 1.3.0.
+
 ## [1.2.0] — 2026-10-22
 
 ### Changed
